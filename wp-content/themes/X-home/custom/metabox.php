@@ -6,7 +6,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
     $prefix = '';
     //Sản phẩm
     $meta_boxes[] = array(
-        'title'      => esc_html__('Thông tin', 'thanhduong'),
+        'title'      => esc_html__('Thông tin', 'xhome'),
         'post_types' => array('product',),
         'context'    => 'normal',
         'priority'   => 'high',
@@ -26,7 +26,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
     // liên hệ
     $meta_boxes[] = array(
-        'title'      => esc_html__('Thông tin', 'thanhduong'),
+        'title'      => esc_html__('Thông tin', 'xhome'),
         'post_types' => array('page',),
         'context'    => 'normal',
         'priority'   => 'high',
@@ -44,7 +44,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
             array(
                 'id' => $prefix . 'nd',
-                'name' => esc_html__('Nội dung liên hệ', 'thanhduong'),
+                'name' => esc_html__('Nội dung liên hệ', 'xhome'),
                 'type'  => 'wysiwyg',
                 'options' => array(
                     'textarea_rows' => 2,
@@ -61,7 +61,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
             array(
                 'id' => 'map',
-                'name' => esc_html__('Map', 'thanhduong'),
+                'name' => esc_html__('Map', 'xhome'),
                 'type'  => 'textarea',
                 'sanitize_callback' => 'none',
             ),
@@ -71,7 +71,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
     //Giới thiệu
     $meta_boxes[] = array(
-        'title'      => esc_html__('Thông tin', 'thanhduong'),
+        'title'      => esc_html__('Thông tin', 'xhome'),
         'post_types' => array('page'),
         'context'    => 'normal',
         'priority'   => 'high',
@@ -90,7 +90,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
             //Tại sao chọn chúng tôi
             array(
                 'id' => $prefix . 'tieude_taisao',
-                'name' => esc_html__('Tiêu đề tại sao chọn chúng tôi', 'thanhduong'),
+                'name' => esc_html__('Tiêu đề tại sao chọn chúng tôi', 'xhome'),
                 'type'  => 'wysiwyg',
                 'options' => array(
                     'textarea_rows' => 2,
@@ -98,7 +98,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
             ),
             array(
                 'id'          => $prefix . 'cards_taisao',
-                'name'        => esc_html__('Danh sách Card lý do', 'thanhduong'),
+                'name'        => esc_html__('Danh sách Card lý do', 'xhome'),
                 'type'        => 'group',
                 'clone'       => true,
                 'sort_clone'  => true,
@@ -107,17 +107,17 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
                 'fields'      => array(
                     array(
                         'id'   => 'card_image',
-                        'name' => esc_html__('Icon card', 'thanhduong'),
+                        'name' => esc_html__('Icon card', 'xhome'),
                         'type' => 'image_advanced',
                     ),
                     array(
                         'id'   => 'card_title',
-                        'name' => esc_html__('Tiêu đề', 'thanhduong'),
+                        'name' => esc_html__('Tiêu đề', 'xhome'),
                         'type' => 'text',
                     ),
                     array(
                         'id'   => 'card_desc',
-                        'name' => esc_html__('Mô tả', 'thanhduong'),
+                        'name' => esc_html__('Mô tả', 'xhome'),
                         'type' => 'textarea',
                         'rows' => 3,
                     ),
@@ -128,7 +128,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
             //Đồng hành
             array(
                 'id' => $prefix . 'tieude_donghanh',
-                'name' => esc_html__('Tiêu đề đồng hành', 'thanhduong'),
+                'name' => esc_html__('Tiêu đề đồng hành', 'xhome'),
                 'type'  => 'wysiwyg',
                 'options' => array(
                     'textarea_rows' => 2,
@@ -137,12 +137,12 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
             array(
                 'id' => $prefix . 'noidung_donghanh',
-                'name' => esc_html__('Nội dung đồng hành', 'thanhduong'),
+                'name' => esc_html__('Nội dung đồng hành', 'xhome'),
                 'type' => 'group',
                 'fields' => array(
                     array(
                         'id' => $prefix . 'image',
-                        'name' => esc_html__('Ảnh', 'thanhduong'),
+                        'name' => esc_html__('Ảnh', 'xhome'),
                         'type'  => 'wysiwyg',
                         'options' => array(
                             'textarea_rows' => 2,
@@ -151,7 +151,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
                     array(
                         'id' => $prefix . 'text',
-                        'name' => esc_html__('Văn bản', 'thanhduong'),
+                        'name' => esc_html__('Văn bản', 'xhome'),
                         'type'  => 'wysiwyg',
                         'options' => array(
                             'textarea_rows' => 2,
@@ -167,7 +167,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 //Đối tác
             array(
                 'id' => $prefix . 'tieude_doitac',
-                'name' => esc_html__('Tiêu đề đối tác', 'thanhduong'),
+                'name' => esc_html__('Tiêu đề đối tác', 'xhome'),
                 'type'  => 'wysiwyg',
                 'options' => array(
                     'textarea_rows' => 2,
@@ -175,7 +175,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
             ),
             array(
                 'id'          => $prefix . 'cards_group',
-                'name'        => esc_html__('Danh sách Card đối tác', 'thanhduong'),
+                'name'        => esc_html__('Danh sách Card đối tác', 'xhome'),
                 'type'        => 'group',
                 'clone'       => true,
                 'sort_clone'  => true,
@@ -184,17 +184,17 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
                 'fields'      => array(
                     array(
                         'id'   => 'card_image',
-                        'name' => esc_html__('Ảnh card', 'thanhduong'),
+                        'name' => esc_html__('Ảnh card', 'xhome'),
                         'type' => 'image_advanced',
                     ),
                     array(
                         'id'   => 'card_title',
-                        'name' => esc_html__('Tiêu đề', 'thanhduong'),
+                        'name' => esc_html__('Tiêu đề', 'xhome'),
                         'type' => 'text',
                     ),
                     array(
                         'id'   => 'card_desc',
-                        'name' => esc_html__('Mô tả', 'thanhduong'),
+                        'name' => esc_html__('Mô tả', 'xhome'),
                         'type' => 'textarea',
                         'rows' => 3,
                     ),
@@ -204,7 +204,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
             //Giá trị cốt lỗi
             array(
                 'id' => $prefix . 'tieude_giatri',
-                'name' => esc_html__('Tiêu đề giá trị', 'thanhduong'),
+                'name' => esc_html__('Tiêu đề giá trị', 'xhome'),
                 'type'  => 'wysiwyg',
                 'options' => array(
                     'textarea_rows' => 2,
@@ -212,7 +212,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
             ),
             array(
                 'id'          => $prefix . 'cards_giatri',
-                'name'        => esc_html__('Danh sách Card giá trị', 'thanhduong'),
+                'name'        => esc_html__('Danh sách Card giá trị', 'xhome'),
                 'type'        => 'group',
                 'clone'       => true,
                 'sort_clone'  => true,
@@ -221,17 +221,17 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
                 'fields'      => array(
                     array(
                         'id'   => 'card_image',
-                        'name' => esc_html__('Icon card', 'thanhduong'),
+                        'name' => esc_html__('Icon card', 'xhome'),
                         'type' => 'image_advanced',
                     ),
                     array(
                         'id'   => 'card_title',
-                        'name' => esc_html__('Tiêu đề', 'thanhduong'),
+                        'name' => esc_html__('Tiêu đề', 'xhome'),
                         'type' => 'text',
                     ),
                     array(
                         'id'   => 'card_desc',
-                        'name' => esc_html__('Mô tả', 'thanhduong'),
+                        'name' => esc_html__('Mô tả', 'xhome'),
                         'type' => 'textarea',
                         'rows' => 3,
                     ),
@@ -246,7 +246,7 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
 
     //BLOG
     $meta_boxes[] = array(
-        'title'      => esc_html__('Thông tin', 'thanhduong'),
+        'title'      => esc_html__('Thông tin', 'xhome'),
         'post_types' => array('page'),
         'context'    => 'normal',
         'priority'   => 'high',
