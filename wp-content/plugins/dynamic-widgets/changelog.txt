@@ -1,0 +1,10 @@
+
+Caia edit ver 1.0 26/04/2019:
+
+- Lược bớt cấu hình ở dyncwid_admin_edit.php và ở dynwid_class.php->getModuleName().
+- Lược bớt widget orphaned hoặc inactive ở page cấu hình ở dynwid_admin_overview.php.
+- Thay thế nhận diện mobile dùng $caia_detected_mobile ở dynwid_worker.php.
+- Tối ưu số lượng query load frontend ở dynwid_class->getOpt() và dwList();
+- Tối ưu số lượng query load backend ở Appearance->Widget tại: dynwid_class->hasOptions & get_types và dynamic-widgets > dynwid_widget_callback.
+- Dịch về tiếng Việt cho các Setting từng thành phần ở các file trong folder /mods/.
+- Tối ưu check table exist tại dynwid_class->construct.

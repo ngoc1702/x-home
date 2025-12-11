@@ -1,0 +1,113 @@
+3.0
+- Upgrade Caia Role Admin to improve UX for CAIA Client Administrator and CAIA Sub Administrator
+- Turn off autoupdate Core, Plugin, Theme, Transaltion.
+- Add CAIA Login Secure.
+- Improve Limit Login for performance.
+- Improve translation Wordpress, Genesis, WP SEO
+- Improve UX, UI by disable unuse element in admin dashboard correspond each roles.
+- Add Secure Login for Administrator.
+- Disallow setting widget logic by Client Administrator.
+- Default disable online update to Administrator and Client Admin.
+- Administrator can online update by change option in CAIA Roles.
+
+2.3
+- Add wp mail smtp to theme. Reconfigures the wp_mail() function to use SMTP instead of mail().
+- Add comment reply notification to theme. When a reply is made to a comment the user has left on the blog, an e-mail shall be sent to the user to notify him of the reply.
+- Add Custom Structure default( /%postname%-%post_id%/ ) in file function.php, disable editing in admin.
+- Fix setting caia featured in screen edit all post.
+- Fix child theme sync for wordpress 4.1 vi.
+
+2.2.1
+- Add limit login attempts to theme. Limit rate of login attempts, including by way of cookies, for each IP.
+
+2.2
+- Upgrade Caia User Role, permit Administrator add more capability to Caia Sub Admin and Caia Client Admin.
+- Support postinfo in Caia New Block and Caia Flexible Block.
+
+2.1
+- Upgrade support online using ajax and custom icon
+- Fix some bug still_have_post on Next Post in Caia Post List Widget, Caia News Block and Caia Flexible Block
+- Fix compatible problem to wp 3.8 on: Caia Support Online Widget, Caia Post List Widget
+- Improve Caia Flexible Block with 2 new hook caia_flexible_block_before_content and caia_flexible_block_after_content
+
+2.0.1
+- Intergrate Simple Login Log (and remove some unuse function and improve performance).
+- Fix bug More From Category của CAIA Post List Widget
+- Fix bug Hook of Caia_Flexible_Block
+- Add 2 functions: save_than_clean_hooks and restore_hooks to Caia_Flexible_Block
+- Upgrade Caia_news_block and Caia_Flexible_Block to support wpml and auto title from term name.
+- Improve performance CAIA Post List
+
+2.0
+- Intergrate CAIA-Featured Plugin (and fix some its bugs).
+- Intergrate Url Vietnamese Friendly.
+- Combine 2 widget CAIA - Recents Posts & CAIA - Featured Posts.
+- Unregister some unuse widget (in the file lib/widgets/widgets.php):
+	. Genesis_Featured_Post
+	. Genesis_Featured_Page
+	. Genesis_User_Profile_Widget
+	. WP_Widget_Recent_Posts	
+	. WP_Widget_Meta
+	. WP_Widget_Archives
+	. WP_Widget_RSS
+	. WP_Widget_Pages
+- Fix Advertise Widget bug.
+- Update Caia_News_Block = Caia_Extra_News_Block (and improve performance).
+- Add Caia_Flexible_Block => can use hook to display many type of block different (view readme.txt).
+- Support block->print_block to use block in others pages (view readme.txt).
+- Support block_code and widget_code to hook to block anh widget of caia.
+- Add functions support block_code and widget_code:
+	. caia_register_block_code() & caia_register_widget_code() (view functions/block.php and widgets/widgets.php);
+- Add Caia_Code_Block using code => easy to creat new simple block.
+- Add Caia Code Widget => easy to creat new simple widget.
+- Improve performance:
+	. Use require (if possible) instead of require_once.
+	. Remove function caia_load_custom, and load directly from theme file to custom folder.
+- DONT SUPPORT BACK => DO NOT COPY PASTE THIS VERSION OVER 1.x VERSION.
+
+1.0.7 beta
+- Add caia-user-roles_php to custom folder. To use, rename to 'caia-user-roles.php' than include_once to functions.php.
+- Block edit files from Daskboard
+- Change CAIA Design -> CAIA Homepage
+- Move CAIA Design, CAIA Setting, CAIA Layout -> Appearance
+
+1.0.6 beta
+- Edit widget online support, use icon support in the folder "caia\images\supportonline\"
+
+1.0.5
+- Remove support custom.css => Dev code into style.css.
+- Update style.css.
+- Rename style.css => style-sample.css.
+- Dev must copy file style-sample.css => style.css to make it work.
+
+1.0.4
+- Improve theme settings API: Add functions in order to get field id, field name in lib/functions/options.php
+- Improve CAIA_Block API: Add more filter for get field id, name and value; add block_class function to abstract class
+- Add function: post_is_in_descendant_category() in lib/functions/post.php
+- Update style.css
+- Fix bugs: CAIA_Block bugs
+- Add 'ignore_sticky_posts' option to CAIA - Recent Posts
+
+1.0.3
+- Change some default css ( font-size, #wrap box-shadow )
+- Change the way load css as Wordpress recommend, and fix stylesheet bugs with Genesis 1.9.1
+- Add 2 contants CHILD_THEME_VERSION and CHILD_THEME_NAME for Genesis 1.9.1
+- Replace CAIA_VERSION by CHILD_THEME_VERSION in CAIA_Settings
+- Stop store caia_version in database, just use CHILD_THEME_VERSION constant
+- Replace CAIA_VERSION by CHILD_THEME_VERSION in lib/functions/upgrade.php
+
+1.0.2
+- Fix News Block bug with more link position
+- Change some function description
+
+1.0.1
+- Add tag.php
+- Remove some files: author.php, date.php
+- Add child theme data into Genesis import/export
+- Add h1 into tag, taxonomy, category... page
+- Change default heading font properties ( in style.css )
+- Remove default Responsive Design
+
+
+1.0
+- The CAIA Child Theme was born!

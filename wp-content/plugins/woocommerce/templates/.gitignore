@@ -1,0 +1,8 @@
+# Bỏ tất cả file log
+*.log
+
+# Bỏ thư mục upload của WordPress
+wp-content/uploads/2025
+
+# Bỏ file cấu hình cục bộ
+wp-config.php

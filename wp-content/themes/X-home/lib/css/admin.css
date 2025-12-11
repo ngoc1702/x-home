@@ -1,0 +1,122 @@
+/** Block
+----------------------------------------------*/
+
+.block {
+	border: 1px solid #DFDFDF;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 0 1px 0 #FFFFFF inset;
+	text-shadow: 0 1px 0 #FFFFFF;
+	margin: 0 0 15px 0;
+}
+
+.block-title-action {
+	float: right;
+}
+
+.block-title-action .block-action {
+	float: right;
+	display: block;
+	width: 26px;
+	height: 27px;
+	text-indent: -9999px;
+	border-left: 1px solid #dfdfdf;
+	background-image: url("../../images/admin-sprites.png");
+	background-repeat: no-repeat;
+}
+
+.block-toggle {
+	background-position: 5px -29px;
+}
+
+.closed .block-toggle {
+	background-position: 5px 7px;
+}
+
+.block-delete {
+	background-position: 3px -153px;
+}
+
+.block-delete:hover {
+	background-position: 3px -126px;
+}
+
+.block h4 {
+	padding: 5px 9px;
+	margin: 0;
+	background-color: #F5F5F5;
+	background-image: -moz-linear-gradient(center top , #f9f9f9, #ececec);
+	background-image: -webkit-linear-gradient(center top , #f9f9f9, #ececec);
+	border-radius: 3px;
+	cursor: move;
+}
+
+.block h4 p {
+	margin: 0;
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.block h4 span {
+	color: #606060;
+}
+
+.block-inside {
+	background-color: #f5f5f5;
+	padding: 10px 5px;
+	z-index: 10;
+}
+
+.block-inside p {
+	margin: 0 0 10px 0;
+}
+
+#home-design-settings .actived-blocks-settings .ui-draggable {
+	width: 100% !important;
+	height: auto !important;
+}
+
+#home-design-settings .actived-blocks-settings .ui-sortable-helper {
+	width: 200px !important;
+}
+
+/** Home Blocks Holder
+----------------------------------------------*/
+#home-block-holder {
+	float: left;
+	width: 200px;
+}
+
+.block-holder .block {
+	width: 200px;
+}
+
+.block-holder .block-title-action {
+	display: none;
+}
+
+/** Home Blocks Settings
+----------------------------------------------*/
+#home-design-settings {
+	margin-left: 250px;
+	padding: 5px 10px;
+}
+
+.actived-blocks {
+	min-height: 50px;
+}
+
+.actived-blocks .block h4 {
+	border-bottom: 1px solid #dfdfdf;
+	border-radius: 3px 3px 0 0;
+}
+
+.actived-blocks .block.closed h4 {
+	border-bottom: none;
+}
+
+/** Genesis admin style
+----------------------------------------------*/
+.genesis-widget-column {    
+    width: 49%;
+}
