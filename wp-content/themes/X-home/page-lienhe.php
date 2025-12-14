@@ -77,7 +77,7 @@ function caia_add_lienhe()
 
 
 
-add_action('genesis_before_footer', 'caia_add_map', 9);
+add_action('genesis_loop', 'caia_add_map');
 function caia_add_map()
 {
 	global $post;
@@ -86,11 +86,6 @@ function caia_add_map()
 	echo do_shortcode($map);
 	echo '</div>';
 
-	if( is_active_sidebar( 'content-anhhero' ) ){
-		echo '<div  class="content-anhhero">';
-			dynamic_sidebar( 'Toàn bộ - Ảnh nền trước chân trang' );
-		echo '</div>';
-}
 }
 
 
