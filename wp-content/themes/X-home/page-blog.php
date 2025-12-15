@@ -68,98 +68,73 @@ function add_page_banner() {
     echo '</div>';
 }
 
+remove_action( 'genesis_loop', 'genesis_do_loop' );
 function add_page_blog() {
-	
 
-    // Xác định trang hiện tại
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    	if( is_active_sidebar( 'content-posts' ) ){
+		echo '<div class="content-posts section"><div class="wrap">';
+			dynamic_sidebar( 'Tin tức - Bài viết nổi bật' );
+		echo '</div></div>';
+	}
 
-    // Truy vấn các bài viết thuộc post type = 'post'
-    $args = array(
-        'post_type'      => 'post',
-        'posts_per_page' => 10,
-        'paged'          => $paged,
-    );
 
-    $query = new WP_Query($args);
+    // Lấy tất cả danh mục có bài viết
+    $categories = get_categories(array(
+        'hide_empty' => true
+    ));
 
-    echo '<div class="blog-wrapper">';
+    if (empty($categories)) return;
 
-    if ($query->have_posts()) :
-        while ($query->have_posts()) : $query->the_post(); ?>
+    foreach ($categories as $category) {
 
-            <article class="blog-item">
-                <a href="<?php the_permalink(); ?>" class="blog-thumb">
-                    <?php if (has_post_thumbnail()) {
-                        the_post_thumbnail('medium');
-                    } ?>
-                </a>
-                <div class="blog-info">
-                <h2 class="blog-title">
-                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                </h2>
-                <div class="blog-meta">
-    <i class="fa-solid fa-calendar-days"></i>
-    <span class="blog-date"><?php echo get_the_date( 'd/m/Y' ); ?></span>
-</div>
-                <div class="blog-excerpt">
-  <?php echo wp_trim_words( get_the_excerpt(), 40, '...' ); ?>
-</div>
+        // Query bài viết theo từng danh mục
+        $args = array(
+            'post_type'      => 'post',
+            'posts_per_page' => 6,
+            'cat'            => $category->term_id,
+            'post_status'    => 'publish'
+        );
 
-                </div>
-            </article>
+        $query = new WP_Query($args);
 
-        <?php endwhile;
+        if ($query->have_posts()) {
 
-        // Phân trang
-        echo '<div class="pagination">';
-        echo paginate_links(array(
-            'total'   => $query->max_num_pages,
-            'current' => $paged,
-            'prev_text' => '«',
-            'next_text' => '»',
-        ));
-        echo '</div>';
+            echo '<section class="blog-category">';
 
-    else :
-        echo '<p>Không có bài viết nào.</p>';
-    endif;
+                // Tiêu đề danh mục
+                echo '<h2 class="category-title">' . esc_html($category->name) . '</h2>';
 
-    echo '</div>';
+                echo '<div class="blog-grid">';
 
-    // Reset lại query chính
-    wp_reset_postdata();
+                while ($query->have_posts()) {
+                    $query->the_post(); ?>
+
+                    <article class="blog-item">
+                        <a href="<?php the_permalink(); ?>">
+                            <div class="thumb">
+                                <?php 
+                                if (has_post_thumbnail()) {
+                                    the_post_thumbnail('medium');
+                                }
+                                ?>
+                            </div>
+
+                            <h3 class="title"><?php the_title(); ?></h3>
+                        </a>
+                    </article>
+
+                <?php }
+
+                echo '</div>'; 
+            echo '</section>';
+
+            wp_reset_postdata();
+        }
+    }
 }
 
 
 
-// add_action('genesis_loop', 'add_page_info');
-// function add_page_info(){
-// global $post;
-// $tieude = get_post_meta($post->ID, 'tieude', true);
-// $info = rwmb_meta('khung_hotro');
-
-// echo '<div class="aside-box section">
-// <div class="aside-info">';
-// echo '<h2 class="widgettitle">'. $tieude .'</h2>';
-// echo '<div class="nd">';
-// 		foreach ($info as $value) {
-// 			echo '<div class="box-info">';
-// 			echo do_shortcode(wpautop($value['nd']));
-// 			echo '</div>';
-// 		}
-// 		echo '</div>';
-// echo '<div></div>';
-// }
-
-add_action ('genesis_after_content_sidebar_wrap' , 'add_banner_before_footer');
-function add_banner_before_footer() {
-     	if( is_active_sidebar( 'content-anhhero' ) ){
-		echo '<div  class="content-anhhero">';
-			dynamic_sidebar( 'Toàn bộ - Ảnh nền trước chân trang' );
-		echo '</div>';
-}
-}
 
 // Mobile
 if (wp_is_mobile() ){

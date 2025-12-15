@@ -198,6 +198,13 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
+		'id'			=> 'content-posts',
+		'name'			=> 'Tin tức - Bài viết nổi bật',
+	)
+);
+
+genesis_register_sidebar( 
+	array(
 		'id'			=> 'content-tuvan',
 		'name'			=> 'Sản phẩm - Hỗ trợ tư vấn',
 	)
