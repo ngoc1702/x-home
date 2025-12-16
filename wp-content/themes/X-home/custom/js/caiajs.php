@@ -69,9 +69,23 @@ jQuery(document).ready(function($) {
 
 
 <script>
+jQuery(document).ready(function($) {
+  $(".xhome-dual-posts__left-list").slick({
+    arrows: false,
+    infinite: true,
+    dots: true,
+    speed: 600,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: false,
+    pauseOnFocus: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  });
+});
+
+
 	jQuery(document).ready( function($){
-
-
 $('.slide_sp .slider-for').slick({
   slidesToShow: 1,
   slidesToScroll: 1,

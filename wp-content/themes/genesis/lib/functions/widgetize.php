@@ -128,18 +128,6 @@ function _genesis_register_default_widget_areas_cb() {
 
 	global $wp_registered_sidebars;
 
-		add_action('widgets_init', function () {
-		genesis_register_widget_area(
-			[
-				'id'               => 'header-menusub',
-				'name'             => __('Header Menu Sub', 'genesis'),
-				'description'      => __('This is the header widget area. It typically appears next to the site cart and login.', 'genesis'),
-				'_genesis_builtin' => true,
-			]
-		);
-	});   
-
-
 
 	if ( isset( $wp_registered_sidebars['header-right'] ) ) {
 		genesis_register_widget_area(

@@ -36,13 +36,6 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
         ),
         'fields'     => array(
             array(
-                'name' => 'Ảnh Banner',
-                'id'   => 'anh_banner',
-                'type' => 'image_advanced',
-                'max_file_uploads' => 1,
-            ),
-
-            array(
                 'id' => $prefix . 'nd',
                 'name' => esc_html__('Nội dung liên hệ', 'xhome'),
                 'type'  => 'wysiwyg',
