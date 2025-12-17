@@ -37,6 +37,8 @@ function caia_add_content_post_meta(){
 	echo '</div>';
 }
 
+
+
 // Custom layout cho trang sản phẩm
 add_action( 'genesis_before_content_sidebar_wrap', 'add_thongtin_sp' );
 function add_thongtin_sp() {

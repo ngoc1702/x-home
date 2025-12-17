@@ -504,8 +504,8 @@ add_shortcode('youtube', 'wp_youtube_video');
 
 // Mobile
 if (wp_is_mobile() ){
-	// remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-	// wp_enqueue_style( 'style-mobile', CHILD_URL.'/style-mobile.css' );
+	remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+	wp_enqueue_style( 'style-mobile', CHILD_URL.'/style-mobile.css' );
 
 }
 
@@ -519,6 +519,81 @@ function add_fontawesome_to_theme() {
     );
 }
 add_action('wp_enqueue_scripts', 'add_fontawesome_to_theme');
+
+
+add_action('init', 'caia_create_category_project');
+function caia_create_category_project() {
+	$labels = [
+		'name' => 'Chuyên mục Công trình thực tế',
+		'singular_name' => 'Chuyên mục Công trình thực tế',
+		'menu_name' => 'Chuyên mục Công trình thực tế',
+	];
+	$args = [
+		'labels' => $labels,
+		'hierarchical' => true,
+        'public' => true,
+		'show_ui' => true,
+		'show_admin_column' => true,
+		'show_in_nav_menus' => true,
+		'rewrite' => ['slug' => 'danh-muc-du-an'],
+	];
+	register_taxonomy('project_cat', ['project'], $args);
+}
+
+add_action('init', 'caia_create_tag_project');
+function caia_create_tag_project() {
+	$labels = [
+		'name' => 'Thẻ Công trình thực tế',
+		'singular_name' => 'Thẻ Công trình thực tế',
+		'menu_name' => 'Thẻ Công trình thực tế',
+	];
+	$args = [
+		'labels' => $labels,
+		'hierarchical' => false,
+        'public' => true,
+		'show_ui' => true,
+		'show_admin_column' => true,
+		'show_in_nav_menus' => true,
+		'rewrite' => ['slug' => 'the-cong-trinh'],
+	];
+	register_taxonomy('project_tag', ['project'], $args);
+}
+
+
+add_action('init', 'caia_custom_post_type');
+function caia_custom_post_type() {
+    $labels = [
+        'name'               => __('Công trình thực tế'),
+        'singular_name'      => __('Công trình thực tế'),
+        'menu_name'          => __('Công trình thực tế'),
+        'name_admin_bar'     => __('Công trình thực tế'),
+        'add_new'            => __('Thêm Công trình thực tế'),
+        'add_new_item'       => __('Thêm Công trình thực tế'),
+        'edit_item'          => __('Sửa Công trình thực tế'),
+        'new_item'           => __('Công trình thực tế mới'),
+        'view_item'          => __('Xem Công trình thực tế'),
+        'search_items'       => __('Tìm kiếm Công trình thực tế'),
+        'not_found'          => __('Không có Công trình thực tế nào'),
+        'not_found_in_trash' => __('Không có Công trình thực tế trong thùng rác'),
+        'all_items'          => __('Tất cả Công trình thực tế'),
+    ];
+
+    $args = [
+        'label'               => __('Công trình thực tế'),
+        'description'         => __('Công trình thực tế'),
+        'labels'              => $labels,
+        'supports'            => ['title', 'editor', 'thumbnail', 'excerpt', 'revisions'],
+        'taxonomies'          => ['project_cat', 'project_tag'], 
+        'public'              => true,
+        'menu_icon'           => 'dashicons-portfolio',
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'has_archive'         => true,
+        'rewrite'             => ['slug' => 'cong-trinh'],
+        'publicly_queryable'  => true,
+    ];
+    register_post_type('project', $args);
+}
 
 
 

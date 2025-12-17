@@ -1,5 +1,7 @@
 <?php
 
+
+ remove_action( 'genesis_loop', 'genesis_do_loop' );
 // Xóa post-info và post-meta
 remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
 remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
@@ -20,6 +22,7 @@ function remove_caia_rating(){
 	}
 }
 
+
 // Thêm thông tin dưới nội dung bài viết
 add_action('genesis_entry_footer', 'caia_add_content_post_meta', 1);
 function caia_add_content_post_meta(){
@@ -31,27 +34,58 @@ function caia_add_content_post_meta(){
 	echo '</div>';
 }
 
-function add_post_thumbnail_to_content( $content ) {
-    if ( is_singular('post') && has_post_thumbnail() && is_main_query() ) {
-        $thumbnail = get_the_post_thumbnail( get_the_ID(), 'full', array( 'class' => 'post-thumbnail' ) );
-        $content = $thumbnail . $content;
-    }
-    return $content;
+
+
+add_action( 'genesis_before_content_sidebar_wrap', 'add_titlte_img_outside_site_inner' );
+
+function add_titlte_img_outside_site_inner() {
+    if ( ! is_singular('post') || is_admin() || is_feed() ) return;
+
+    $post_id = get_the_ID();
+    if ( ! $post_id ) return;
+
+    echo '<div class="post-hero-outside-inner">';
+
+        echo '<div class="wrap">';
+            echo '<h1 class="entry-title">' . esc_html( get_the_title( $post_id ) ) . '</h1>';
+
+            if ( has_post_thumbnail( $post_id ) ) {
+                echo get_the_post_thumbnail(
+                    $post_id,
+                    'full',
+                    array( 'class' => 'post-thumbnail', 'loading' => 'lazy' )
+                );
+            }
+        echo '</div>';
+
+    echo '</div>';
 }
-add_filter( 'the_content', 'add_post_thumbnail_to_content' );
+
+add_action( 'genesis_loop', 'add_post_content' );
+
+function add_post_content() {
+    if ( have_posts() ) {
+        while ( have_posts() ) {
+            the_post();
+            the_content();
+        }
+        rewind_posts();
+    }
+}
+
 
 
 // Thêm bài viết liên quan
-// add_action( 'genesis_before_sidebar_widget_area', 'caia_add_post_YARPP' );
-// function caia_add_post_YARPP(){
-// 	yarpp_related(
-// 		array(
-// 			'post_type' => 'post',
-// 			'threshold' => 1,
-// 			'template' => 'yarpp-template-post.php',
-// 			'limit' => 5,
-// 		)
-// 	);
-// }
+add_action( 'genesis_before_sidebar_widget_area', 'caia_add_post_YARPP' );
+function caia_add_post_YARPP(){
+	yarpp_related(
+		array(
+			'post_type' => 'post',
+			'threshold' => 1,
+			'template' => 'yarpp-template-post.php',
+			'limit' => 5,
+		)
+	);
+}
 
 genesis();
