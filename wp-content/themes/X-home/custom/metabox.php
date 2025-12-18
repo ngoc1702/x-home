@@ -22,6 +22,31 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
         ),
     );
 
+    //Công trình thực tế
+        $meta_boxes[] = array(
+        'title'      => esc_html__('Thông tin', 'xhome'),
+        'post_types' => array('project',),
+        'context'    => 'normal',
+        'priority'   => 'high',
+        'autosave'   => true,
+        'fields'     => array(
+
+            array(
+                'name' => 'Ảnh công trình',
+                'id'   => 'anh_project',
+                'type' => 'image_advanced',
+                'max_file_uploads' => 10,
+            ),
+
+            array(
+                'name' => 'Địa chỉ công trình',
+                'id' => 'diachi',
+                'type' => 'text',
+                'size' => 70,
+            ),
+        ),
+    );
+
 
 
     // liên hệ

@@ -117,11 +117,67 @@ $('.slide_sp .slider-nav').slick({
 
 });
 
-jQuery(document).ready(function($) {
-  $(".content-banner").slick({
-    arrows: true,
+jQuery(document).ready(function ($) {
+  var $banner = $(".content-banner");
+  if (!$banner.length) return;
+
+  // 0) Dọn init cũ nếu có
+  if ($banner.hasClass("slick-initialized")) {
+    $banner.slick("unslick");
+  }
+  $banner.find(".xhome-main-slider.slick-initialized").slick("unslick");
+  $banner.find(".xhome-thumbs.slick-initialized").slick("unslick");
+
+  // 1) Tạo wrapper main slider (không đụng HTML gốc, chỉ thao tác DOM runtime)
+  var $main = $banner.children(".xhome-main-slider");
+  if (!$main.length) {
+    $main = $('<div class="xhome-main-slider"></div>');
+    $banner.prepend($main);
+  }
+
+  // 2) Chuyển tất cả media_image vào main slider
+  $banner.children("section.widget.widget_media_image").appendTo($main);
+
+  // 3) Text widget: giữ nguyên section, chỉ thêm class + absolute overlay
+  var $text = $banner.children("section.widget.widget_text").first();
+  if ($text.length) {
+    $text.addClass("xhome-text-overlay").appendTo($banner);
+  }
+
+  // Helper: ưu tiên ảnh nhỏ từ srcset (600w) để làm thumb, fallback src/currentSrc
+  function pickThumbSrc(img) {
+    var $img = $(img);
+    var srcset = $img.attr("srcset") || "";
+    if (srcset) {
+      // lấy candidate có "600w" nếu có
+      var cand = srcset.split(",").map(s => s.trim());
+      var hit = cand.find(s => /600w/.test(s));
+      if (hit) return hit.split(" ")[0];
+      // không có 600w thì lấy cái đầu
+      return cand[0].split(" ")[0];
+    }
+    return $img.prop("currentSrc") || $img.attr("src") || "";
+  }
+
+  // 4) Thumbs: tạo bên trong banner (absolute), không để ngoài nữa
+  var $thumbWrap = $banner.children(".xhome-thumbs-wrap");
+  if (!$thumbWrap.length) {
+    $thumbWrap = $('<div class="xhome-thumbs-wrap"><div class="xhome-thumbs"></div></div>');
+    $banner.append($thumbWrap);
+  }
+  var $thumbs = $thumbWrap.find(".xhome-thumbs").empty();
+
+  $main.find("section.widget.widget_media_image img").each(function () {
+    var t = pickThumbSrc(this);
+    if (!t) return;
+    $thumbs.append('<div class="xhome-thumb"><img src="' + t + '" alt=""></div>');
+  });
+
+  // 5) Init slick: chỉ chạy trên wrapper ảnh
+  $main.slick({
+    arrows: false,
     infinite: true,
-    dots: true,
+    dots: false,
     speed: 600,
     autoplay: true,
     autoplaySpeed: 5000,
@@ -129,8 +185,22 @@ jQuery(document).ready(function($) {
     pauseOnFocus: false,
     slidesToShow: 1,
     slidesToScroll: 1,
+    fade: true,
+    asNavFor: $thumbs
+  });
+
+  $thumbs.slick({
+    arrows: false,
+    infinite: true,
+    dots: false,
+    speed: 300,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    focusOnSelect: true,
+    asNavFor: $main
   });
 });
+
 
 
 
