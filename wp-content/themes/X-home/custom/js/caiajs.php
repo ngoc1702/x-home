@@ -117,89 +117,142 @@ $('.slide_sp .slider-nav').slick({
 
 });
 
-jQuery(document).ready(function ($) {
+jQuery(function ($) {
   var $banner = $(".content-banner");
   if (!$banner.length) return;
 
-  // 0) Dọn init cũ nếu có
-  if ($banner.hasClass("slick-initialized")) {
-    $banner.slick("unslick");
-  }
-  $banner.find(".xhome-main-slider.slick-initialized").slick("unslick");
-  $banner.find(".xhome-thumbs.slick-initialized").slick("unslick");
-
-  // 1) Tạo wrapper main slider (không đụng HTML gốc, chỉ thao tác DOM runtime)
+  // ===== 1) Setup main wrapper =====
   var $main = $banner.children(".xhome-main-slider");
   if (!$main.length) {
     $main = $('<div class="xhome-main-slider"></div>');
     $banner.prepend($main);
   }
 
-  // 2) Chuyển tất cả media_image vào main slider
+  // ===== 2) Move all media_image into main slider =====
   $banner.children("section.widget.widget_media_image").appendTo($main);
 
-  // 3) Text widget: giữ nguyên section, chỉ thêm class + absolute overlay
+  // ===== 3) Text widget overlay =====
   var $text = $banner.children("section.widget.widget_text").first();
-  if ($text.length) {
-    $text.addClass("xhome-text-overlay").appendTo($banner);
-  }
+  if ($text.length) $text.addClass("xhome-text-overlay").appendTo($banner);
 
-  // Helper: ưu tiên ảnh nhỏ từ srcset (600w) để làm thumb, fallback src/currentSrc
-  function pickThumbSrc(img) {
-    var $img = $(img);
-    var srcset = $img.attr("srcset") || "";
-    if (srcset) {
-      // lấy candidate có "600w" nếu có
-      var cand = srcset.split(",").map(s => s.trim());
-      var hit = cand.find(s => /600w/.test(s));
-      if (hit) return hit.split(" ")[0];
-      // không có 600w thì lấy cái đầu
-      return cand[0].split(" ")[0];
-    }
-    return $img.prop("currentSrc") || $img.attr("src") || "";
-  }
-
-  // 4) Thumbs: tạo bên trong banner (absolute), không để ngoài nữa
+  // ===== 4) Create thumbs wrap inside banner =====
   var $thumbWrap = $banner.children(".xhome-thumbs-wrap");
   if (!$thumbWrap.length) {
     $thumbWrap = $('<div class="xhome-thumbs-wrap"><div class="xhome-thumbs"></div></div>');
     $banner.append($thumbWrap);
   }
-  var $thumbs = $thumbWrap.find(".xhome-thumbs").empty();
+  var $thumbs = $thumbWrap.find(".xhome-thumbs");
 
+  // ===== 5) Unslick clean =====
+  if ($main.hasClass("slick-initialized")) $main.slick("unslick");
+  if ($thumbs.hasClass("slick-initialized")) $thumbs.slick("unslick");
+
+  // ===== helper: pick 600w from srcset if available =====
+  function pickThumbSrc(img) {
+    var $img = $(img);
+    var srcset = $img.attr("srcset") || "";
+    if (srcset) {
+      var cand = srcset.split(",").map(function (s) { return s.trim(); });
+      var hit = cand.find(function (s) { return /600w/.test(s); });
+      if (hit) return hit.split(" ")[0];
+      return cand[0].split(" ")[0];
+    }
+    return $img.prop("currentSrc") || $img.attr("src") || "";
+  }
+
+  // ===== 6) Build thumbs items fresh =====
+  $thumbs.empty();
   $main.find("section.widget.widget_media_image img").each(function () {
     var t = pickThumbSrc(this);
     if (!t) return;
     $thumbs.append('<div class="xhome-thumb"><img src="' + t + '" alt=""></div>');
   });
 
-  // 5) Init slick: chỉ chạy trên wrapper ảnh
-  $main.slick({
+  var count = $main.find("section.widget.widget_media_image").length;
+  if (count <= 1) return;
+
+  var showThumbs = Math.min(3, count);
+
+  // ===== 7) Init thumbs =====
+  $thumbs.slick({
     arrows: false,
-    infinite: true,
     dots: false,
+    infinite: false,
+    autoplay: false,
+    slidesToShow: showThumbs,
+    slidesToScroll: 1,
+    swipeToSlide: true
+  });
+
+  // ===== 8) Init main =====
+$main.slick({
+  arrows: false,
+  dots: false,
+  infinite: true,
+  speed: 900,            
+  autoplay: true,
+  autoplaySpeed: 4500,
+  pauseOnHover: false,
+  pauseOnFocus: false,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  fade: true,
+  cssEase: "ease-in-out", 
+  waitForAnimate: false
+});
+
+
+  // ===== 9) CLICK THUMB -> GO MAIN (index theo vị trí thật) =====
+$thumbs.off("click.xhome").on("click.xhome", ".slick-slide", function (e) {
+  e.preventDefault();
+
+  var idx = $(this).index();
+  if (idx < 0) return;
+  $main.slick("slickGoTo", idx, false);
+  $main.slick("slickPlay");
+});
+
+
+  // (optional) main chạy -> kéo thumbs chạy theo cho đẹp
+  $main.on("afterChange", function (e, slick, current) {
+    $thumbs.slick("slickGoTo", current);
+  });
+});
+
+
+jQuery(function ($) {
+  const $s = $(".content-congtrinhthucte .main-posts");
+
+  if ($s.hasClass("slick-initialized")) $s.slick("unslick");
+
+  $s.slick({
+    arrows: true,
+    dots: true,
     speed: 600,
     autoplay: true,
     autoplaySpeed: 5000,
     pauseOnHover: false,
     pauseOnFocus: false,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    fade: true,
-    asNavFor: $thumbs
-  });
-
-  $thumbs.slick({
-    arrows: false,
     infinite: true,
-    dots: false,
-    speed: 300,
-    slidesToShow: 3,
+
+    centerMode: true,
+    centerPadding: "0px",   
+    slidesToShow: 3,        
     slidesToScroll: 1,
     focusOnSelect: true,
-    asNavFor: $main
+
+
+    responsive: [
+      { breakpoint: 992, settings: { slidesToShow: 1, centerPadding: "60px" } },
+      { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: "24px", arrows: false } },
+    ],
+  });
+
+  $(window).on("load resize", function () {
+    $s.slick("setPosition");
   });
 });
+
 
 
 
@@ -217,7 +270,7 @@ jQuery(document).ready(function($) {
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 768, // tablet & mobile
+        breakpoint: 768, 
         settings: {
           slidesToShow:1,
         },

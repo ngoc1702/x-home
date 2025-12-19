@@ -130,13 +130,6 @@ genesis_register_sidebar(
 	)
 );
 
-genesis_register_sidebar( 
-	array(
-		'id'			=> 'content-tieuchi',
-		'name'			=> 'Trang chủ - Tiêu chí',
-	)
-);
-
 
 genesis_register_sidebar( 
 	array(
@@ -149,15 +142,22 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
-		'id'			=> 'content-tiepnhan',
-		'name'			=> 'Trang chủ - Tiếp nhận',
+		'id'			=> 'content-dichvu',
+		'name'			=> 'Trang chủ - Dịch vụ',
 	)
 );
 
 genesis_register_sidebar( 
 	array(
-		'id'			=> 'content-camket',
-		'name'			=> 'Trang chủ - Cam kết chất lượng',
+		'id'			=> 'content-congtrinhthucte',
+		'name'			=> 'Trang chủ - Công trình thực tế',
+	)
+);
+
+genesis_register_sidebar( 
+	array(
+		'id'			=> 'content-taisao',
+		'name'			=> 'Trang chủ - Tại sao nên chọn chúng tôi',
 	)
 );
 

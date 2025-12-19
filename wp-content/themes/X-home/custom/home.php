@@ -10,12 +10,6 @@ function caia_add_content_slider(){
 		echo '</div>';
 	}
 
-	if( is_active_sidebar( 'content-tieuchi' ) ){
-		echo '<div class="content-tieuchi section"><div class="wrap">';
-			dynamic_sidebar( 'Trang chủ - Tiêu chí' );
-		echo '</div></div>';
-	}
-
 	if( is_active_sidebar( 'content-vechungtoi' ) ){
 		echo '<div class="content-vechungtoi section"><div class="wrap">';
 			dynamic_sidebar( 'Trang chủ - Về chúng tôi' );
@@ -23,9 +17,21 @@ function caia_add_content_slider(){
 	}
 
 
-	if( is_active_sidebar( 'content-tiepnhan' ) ){
-		echo '<div  class="content-tiepnhan section"><div class="wrap">';
-			dynamic_sidebar( 'Trang chủ - Tiếp nhận' );
+	if( is_active_sidebar( 'content-dichvu' ) ){
+		echo '<div  class="content-dichvu section"><div class="wrap">';
+			dynamic_sidebar( 'Trang chủ - Dịch vụ' );
+		echo '</div></div>';
+	}
+
+		if( is_active_sidebar( 'content-congtrinhthucte' ) ){
+		echo '<div  class="content-congtrinhthucte section">';
+			dynamic_sidebar( 'Trang chủ - Công trình thực tế' );
+		echo '</div>';
+	}
+
+			if( is_active_sidebar( 'content-taisao' ) ){
+		echo '<div  class="content-taisao section"><div class="wrap">';
+			dynamic_sidebar( 'Trang chủ - Tại sao nên chọn chúng tôi' );
 		echo '</div></div>';
 	}
 	
@@ -35,11 +41,7 @@ function caia_add_content_slider(){
 		echo '</div></div>';
 	}
 
-		if( is_active_sidebar( 'content-camket' ) ){
-		echo '<div  class="content-camket section"><div class="wrap">';
-			dynamic_sidebar( 'Trang chủ - Cam kết chất lượng' );
-		echo '</div></div>';
-	}
+
 
 	if( is_active_sidebar( 'content-news' ) ){
 		echo '<div  class="content-news section"><div class="wrap">';
