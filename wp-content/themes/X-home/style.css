@@ -146,6 +146,7 @@ body {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
   z-index: 9;
   float: left;
+  border-bottom: 0.5px solid #C5A47E;
 }
 
 .site-title .wrap {
@@ -2079,27 +2080,30 @@ line-height: 25px;
 .content-vechungtoi p {
 font-size: 16px;
 font-style: normal;
-font-weight: 500;
+font-weight: 400;
 line-height: 27px;
   text-align: justify;
 }
 
 .content-vechungtoi p a {
   cursor: pointer;
-     display: inline-flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    height: 44px;
-    padding: 0 26px;
+    gap: 10px;
+    color: #c5a47e;
+    border: 2px solid #c5a47e;
+    padding: 12px 26px;
     border-radius: 999px;
-    border: 1px solid #d5b06b;
-    color: #d5b06b;
     text-decoration: none;
-    font-weight: 700;
-    letter-spacing: .5px;
+    font-weight: 600;
+    background: transparent;
+    transition: transform .2s ease, background .2s ease, color .2s ease;
     margin-top: 24px;
-  height: 50px;
-  text-transform: uppercase;
+}
+
+.content-vechungtoi p a:after{
+  content: "→";
+  font-size: 18px;
 }
 
 .content-dichvu{
@@ -2112,7 +2116,7 @@ line-height: 27px;
   margin-bottom:50px;
 }
 
-.content-dichvu .widgettitle, .content-congtrinhthucte .widgettitle, .content-taisao  .widget-title{
+.content-dichvu .widgettitle, .content-congtrinhthucte .widgettitle, .content-taisao  .widget-title, .content-news h2{
   font-size:36px;
   font-weight:700;
   text-transform:uppercase;
@@ -2122,7 +2126,7 @@ line-height: 27px;
   margin-bottom:24px;
 }
 
-.content-dichvu .widgettitle::after, .content-congtrinhthucte .widgettitle::after, .content-taisao  .widget-title::after{
+.content-dichvu .widgettitle::after, .content-congtrinhthucte .widgettitle::after, .content-news h2::after{
   content:"";
   width:60px;
   height:2px;
@@ -2131,16 +2135,24 @@ line-height: 27px;
   margin:12px auto 0;
 }
 
+.content-taisao  .widget-title::after{
+  content:"";
+  width:60px;
+  height:2px;
+  background:#FFF;
+  display:block;
+  margin:12px 0 0;
+}
+
 .content-dichvu .textwidget p, .content-congtrinhthucte .textwidget p{
   max-width:900px;
   margin:auto;
 font-size: 16px;
 font-style: normal;
-font-weight: 500;
+font-weight: 400;
 line-height: 25px;
 }
 
-/* ===== GRID 3 BOX ===== */
 .content-dichvu .widget.image-upload{
   width:33.333%;
   float:left;
@@ -2393,8 +2405,6 @@ line-height: 25px;
 
 
 
-
-/* ====== SECTION WRAP ====== */
 .content-taisao{
   padding: 60px 0;
   margin: 0 auto;
@@ -2402,122 +2412,110 @@ line-height: 25px;
 }
 
 .content-taisao .wrap{
-    display: flex;
-  gap: 80px;
+  display: flex;
+  gap: 60px;
   align-items: center;
 }
-/* ====== LEFT IMAGE ====== */
-.content-taisao {
-  flex: 0 0 46%;
+
+.content-taisao .wrap > :nth-child(1){
+  flex: 0 0 47%;
 }
+
+.content-taisao .wrap > :nth-child(2){
+  flex: 0 0 51%;
+}
+
 
 .content-taisao img{
   width: 100%;
-  height: auto;
+  height: auto ;
   display: block;
 }
 
 .content-taisao  .textwidget > p{
-  color: rgba(255,255,255,.85);
-  font-size: 16px;
-  line-height: 1.7;
-  margin: 0 0 28px;
-  max-width: 520px;
+  color: #FFF;
+text-align: justify;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 25px;
 }
 
 .content-taisao  .textwidget ul{
   list-style: none;
-  margin: 10px 0 34px;
+  margin: 10px 0 40px;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 40px;
+  gap: 24px 40px;
   align-items: flex-start;
 }
 
-/* bố cục: item 1 full, item 2-3 chia đôi */
 .content-taisao .textwidget ul li{ margin: 0; padding: 0; }
 .content-taisao .textwidget ul li:nth-child(1){ width: 100%; text-align: center; margin-top: 14px; }
-.content-taisao .textwidget ul li:nth-child(2),
-.content-taisao .textwidget ul li:nth-child(3){ width: calc(50% - 20px); text-align: center; }
 
-/* ẩn chữ gốc trong <em> nhưng giữ DOM */
-.content-taisao .textwidget ul li em{
-  font-style: normal;
-  color: transparent;
-  position: relative;
+
+/* ĐỔI .YOUR_SCOPE thành wrapper thật của bạn để scope lại */
+.content-taisao ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 80px;
+  justify-items: center;
+  text-align: center;
+}
+
+
+
+.content-taisao li:nth-child(2) strong,
+.content-taisao li:nth-child(3) strong{
   display: block;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
 }
 
-/* 1000+ */
-.content-taisao .textwidget ul li:nth-child(1) em:before{
-  content: "1000+";
-  display:block;
-  color: #c5a47e;
-  font-weight: 800;
-  font-size: 86px;
-  line-height: 1;
-  letter-spacing: .02em;
-}
-.content-taisao #text-9 .textwidget ul li:nth-child(1) em:after{
-  content: "Dự án thiết kế và thi công";
-  display:block;
-  color: rgba(255,255,255,.85);
-  font-size: 16px;
-  margin-top: 10px;
+.content-taisao li:first-child{
+  grid-column: 1 / -1;
+  margin-bottom: 6px;
 }
 
-/* 800+ */
-.content-taisao #text-9 .textwidget ul li:nth-child(2) em:before{
-  content: "800+";
-  display:block;
-  color: #c5a47e;
-  font-weight: 800;
-  font-size: 54px;
-  line-height: 1;
-}
-.content-taisao #text-9 .textwidget ul li:nth-child(2) em:after{
-  content: "Khách hàng tin tưởng \A & lựa chọn";
-  white-space: pre-line;
-  display:block;
-  color: rgba(255,255,255,.85);
-  font-size: 15px;
-  line-height: 1.5;
-  margin-top: 10px;
+.content-taisao li:first-child em{
+  display: block;
+  color: var(--main, #C5A47E);
+text-align: center;
+font-size: 80px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
 }
 
-/* 300+ */
-.content-taisao #text-9 .textwidget ul li:nth-child(3) em:before{
-  content: "300+";
-  display:block;
-  color: #c5a47e;
-  font-weight: 800;
-  font-size: 54px;
-  line-height: 1;
+.content-taisao li:nth-child(2) em, .content-taisao li:nth-child(3) em{
+  display: block;
+  color: var(--main, #C5A47E);
+text-align: center;
+font-size: 54px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
 }
-.content-taisao #text-9 .textwidget ul li:nth-child(3) em:after{
-  content: "Kiến trúc sư, kỹ sư chuyên \A môn cao";
-  white-space: pre-line;
-  display:block;
-  color: rgba(255,255,255,.85);
-  font-size: 15px;
-  line-height: 1.5;
-  margin-top: 10px;
-}
+
+
 
 /* ====== BUTTON ====== */
-.content-taisao #text-9 .textwidget p:last-child{
+.content-taisao  .textwidget p:last-child{
   margin: 0;
   display: flex;
   justify-content: center;
 }
-.content-taisao #text-9 .textwidget p:last-child a{
+.content-taisao .textwidget p:last-child a{
   display: inline-flex;
   align-items: center;
   gap: 10px;
 
   color: #c5a47e;
-  border: 2px solid rgba(197,164,126,.9);
+  border: 2px solid #c5a47e;
   padding: 12px 26px;
   border-radius: 999px;
   text-decoration: none;
@@ -2525,12 +2523,19 @@ line-height: 25px;
   background: transparent;
   transition: transform .2s ease, background .2s ease, color .2s ease;
 }
-.content-taisao #text-9 .textwidget p:last-child a:after{
+.content-taisao  .textwidget p:last-child a:after{
   content: "→";
   font-size: 18px;
-  line-height: 1;
 }
-.content-taisao #text-9 .textwidget p:last-child a:hover{
+.content-taisao  .textwidget p:last-child a:hover{
   background: rgba(197,164,126,.12);
-  transform: translateY(-1px);
+}
+
+.content-news{
+  padding: 60px 0px;
+  margin: auto;
+}
+
+.content-news .widgettitle{
+  text-align: center;
 }

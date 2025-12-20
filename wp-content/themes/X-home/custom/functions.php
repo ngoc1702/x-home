@@ -166,7 +166,7 @@ genesis_register_sidebar(
 genesis_register_sidebar( 
 	array(
 		'id'			=> 'content-news',
-		'name'			=> 'Trang chủ - Tin tức',
+		'name'			=> 'Trang chủ - Câu chuyện kiến trúc',
 	)
 );
 

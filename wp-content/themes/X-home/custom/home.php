@@ -34,18 +34,12 @@ function caia_add_content_slider(){
 			dynamic_sidebar( 'Trang chủ - Tại sao nên chọn chúng tôi' );
 		echo '</div></div>';
 	}
-	
-	if( is_active_sidebar( 'content-product' ) ){
-		echo '<div  class="content-product section"><div class="wrap">';
-			dynamic_sidebar( 'Trang chủ - Sản phẩm' );
-		echo '</div></div>';
-	}
 
 
 
 	if( is_active_sidebar( 'content-news' ) ){
 		echo '<div  class="content-news section"><div class="wrap">';
-			dynamic_sidebar( 'Trang chủ - Tin tức' );
+			dynamic_sidebar( 'Trang chủ - Câu chuyện kiến trúc' );
 		echo '</div></div>';
 	}
 
