@@ -2760,3 +2760,31 @@ line-height: normal;
 .home .site-inner{
   display: none;
 }
+
+.content-tieudefeedback{
+  margin: 40px auto 0px;
+}
+
+.content-tieudefeedback .widgettitle{
+    position: relative;
+    font-size: 36px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #C5A47E;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.content-tieudefeedback .widgettitle::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 60px;
+    height: 2px;
+    background: #FFF;
+    border-radius: 2px;
+    transform: translateX(-50%);
+} 
+

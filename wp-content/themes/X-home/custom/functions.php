@@ -156,6 +156,21 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
+		'id'			=> 'content-tieudefeedback',
+		'name'			=> 'Trang chủ - Tiêu đề Feedback',
+	)
+);
+
+genesis_register_sidebar( 
+	array(
+		'id'			=> 'content-feedback',
+		'name'			=> 'Trang chủ - Feedback của khách hàng',
+	)
+);
+
+
+genesis_register_sidebar( 
+	array(
 		'id'			=> 'content-taisao',
 		'name'			=> 'Trang chủ - Tại sao nên chọn chúng tôi',
 	)
@@ -177,19 +192,6 @@ genesis_register_sidebar(
 	)
 );
 
-genesis_register_sidebar( 
-	array(
-		'id'			=> 'content-tieudefeedback',
-		'name'			=> 'Trang chủ - Tiêu đề Feedback',
-	)
-);
-
-genesis_register_sidebar( 
-	array(
-		'id'			=> 'content-feedback',
-		'name'			=> 'Trang chủ - Feedback của khách hàng',
-	)
-);
 
 genesis_register_sidebar( 
 	array(
