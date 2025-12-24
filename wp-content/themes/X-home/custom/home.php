@@ -43,6 +43,12 @@ function caia_add_content_slider(){
 		echo '</div></div>';
 	}
 
+		if( is_active_sidebar( 'content-dangky' ) ){
+		echo '<div  class="content-dangky section"><div class="wrap">';
+			dynamic_sidebar( 'Trang chủ - Đăng ký tư vấn' );
+		echo '</div></div>';
+	}
+
 		if( is_active_sidebar( 'content-tieudefeedback' ) ){
 		echo '<div  class="content-tieudefeedback section"><div class="wrap">';
 			dynamic_sidebar( 'Trang chủ -  Tiêu đề Feedback' );

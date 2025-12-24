@@ -172,6 +172,13 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
+		'id'			=> 'content-dangky',
+		'name'			=> 'Trang chủ - Đăng ký tư vấn',
+	)
+);
+
+genesis_register_sidebar( 
+	array(
 		'id'			=> 'content-tieudefeedback',
 		'name'			=> 'Trang chủ - Tiêu đề Feedback',
 	)

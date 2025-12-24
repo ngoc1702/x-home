@@ -347,21 +347,38 @@ $post_type_name = $post_type_obj ? $post_type_obj->labels->name : '';
 								the_title_attribute( 'echo=0' ), 
 								get_the_title() );								
 						}else{
-							$listitems .= sprintf( '<li><a href="%s" title="%s" class="%s">%s</a><p><a href="%s" title="%s">%s</a></p></li>', 
-								get_permalink(),
-								$cur_post_title_attr,
-								esc_attr( $image_alignment_extra ),
-								genesis_get_image( array( 
-										'format' => 'html', 
-										'size' 	 => $image_size_extra, 					
-										'attr' => array(							
-												'title' => $cur_post_title_attr,
-												'alt'   => $cur_post_title_attr,
-												)					
-										)),
-								get_permalink(), 
-								the_title_attribute( 'echo=0' ), 
-								get_the_title() );								
+							//đây là chỗ sửa lại đoạn hiển thị extra post khi không có byline
+							$desc = get_the_excerpt();
+if ( empty( $desc ) ) {
+	$desc = wp_trim_words( wp_strip_all_tags( get_the_content() ), 25, '…' );
+}
+
+$listitems .= sprintf(
+	'<li class="extra-item">
+		<div class="extra-wrap">
+			<div class="img-box"><a class="%s" href="%s" title="%s">%s</a></div>
+			<div>
+			<h3 class="extra-title"><a href="%s" title="%s">%s</a></h3>
+			<p class="extra-desc">%s</p>
+			</div>
+		</div>
+	</li>',
+	esc_attr( $image_alignment_extra ),
+	esc_url( $permalink ),
+	esc_attr( $title_attr ),
+	genesis_get_image( array(
+		'format' => 'html',
+		'size'   => $image_size_extra,
+		'attr'   => array(
+			'title' => $title_attr,
+			'alt'   => $title_attr,
+		),
+	) ),
+	esc_url( $permalink ),
+	esc_attr( $title_attr ),
+	esc_html( get_the_title() ),
+	esc_html( $desc )
+);		
 						}						
 					}				
 				}else{
@@ -698,10 +715,27 @@ $post_type_name = $post_type_obj ? $post_type_obj->labels->name : '';
 	                <input type="text" id="<?php echo $this->get_field_id( 'post_info_extra' ); ?>" name="<?php echo $this->get_field_name( 'post_info_extra' ); ?>" value="<?php echo esc_attr( $instance['post_info_extra'] ); ?>" class="widefat" />
 	            </p>
 
+
+				    <p>
+	                <label for="<?php echo $this->get_field_id( 'show_content' ); ?>"><?php _e( 'Kiểu nội dung', 'caia' ); ?>:</label>
+	                <select id="<?php echo $this->get_field_id( 'show_content' ); ?>" name="<?php echo $this->get_field_name( 'show_content' ); ?>">
+	                    <option value="content" <?php selected( 'content' , $instance['show_content'] ); ?>><?php _e( 'Hiển thị toàn bộ', 'caia' ); ?></option>
+	                    <option value="excerpt" <?php selected( 'excerpt' , $instance['show_content'] ); ?>><?php _e( 'Hiển thị tóm tắt', 'caia' ); ?></option>
+	                    <option value="content-limit" <?php selected( 'content-limit' , $instance['show_content'] ); ?>><?php _e( 'Hiển thị giới hạn', 'caia' ); ?></option>
+	                    <option value="" <?php selected( '' , $instance['show_content'] ); ?>><?php _e( 'Không hiển thị', 'caia' ); ?></option>
+	                </select>
+	                <br />
+	                <label for="<?php echo $this->get_field_id( 'content_limit' ); ?>"><?php _e( 'Số ký tự', 'caia' ); ?>
+	                    <input type="text" id="<?php echo $this->get_field_id( 'image_alignment' ); ?>" name="<?php echo $this->get_field_name( 'content_limit' ); ?>" value="<?php echo esc_attr( intval( $instance['content_limit'] ) ); ?>" size="3" />
+						<?php _e( 'ký tự', 'caia' ); ?>
+	                </label>
+	            </p>
+				
+
 				
 
 
-	            <!-- <p>
+	            <p>
 	                <label for="<?php echo $this->get_field_id( 'show_content' ); ?>"><?php _e( 'Kiểu nội dung', 'caia' ); ?>:</label>
 	                <select id="<?php echo $this->get_field_id( 'show_content' ); ?>" name="<?php echo $this->get_field_name( 'show_content' ); ?>">
 	                    <option value="content" <?php selected( 'content' , $instance['show_content'] ); ?>><?php _e( 'Hiển thị toàn bộ', 'caia' ); ?></option>
@@ -728,7 +762,7 @@ $post_type_name = $post_type_obj ? $post_type_obj->labels->name : '';
 				<p>
 					<input type="checkbox" id="<?php echo $this->get_field_id( 'check_meta' ); ?>" name="<?php echo $this->get_field_name( 'check_meta' ); ?>" value="1" <?php checked( 1, $instance['check_meta'] ); ?> />
 					<label for="<?php echo $this->get_field_id( 'check_meta' ); ?>"><?php _e( 'Hiển thị nội dung metabox', 'caia' ); ?></label>	
-				</p> -->
+				</p> 
 
 
 
