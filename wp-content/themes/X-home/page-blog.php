@@ -2,8 +2,9 @@
 
 /* Template Name: Trang blog */
 
-add_filter( 'genesis_site_layout', 'caia_cpt_layout' );
-function caia_cpt_layout() {
+add_filter('genesis_site_layout', 'caia_cpt_layout');
+function caia_cpt_layout()
+{
   return 'full-width-content';
 }
 
@@ -13,62 +14,65 @@ function caia_cpt_layout() {
 
 // Xóa social share
 add_action('genesis_before_loop', 'remove_caia_rating');
-function remove_caia_rating(){
-	global $caia_rating;
-	$star_pri = has_filter( 'the_content', array($caia_rating, 'add_rating_content_bottom'));
-	if ($star_pri !== false){
-		remove_filter('the_content', array($caia_rating, 'add_rating_content_bottom'), $star_pri);
-	}
+function remove_caia_rating()
+{
+  global $caia_rating;
+  $star_pri = has_filter('the_content', array($caia_rating, 'add_rating_content_bottom'));
+  if ($star_pri !== false) {
+    remove_filter('the_content', array($caia_rating, 'add_rating_content_bottom'), $star_pri);
+  }
 
-	global $caia_social;
-	$social_pri = has_filter( 'the_content', array($caia_social, 'add_native_share_button_at_bottom'));
-	if ($social_pri !== false){
-		remove_filter('the_content', array($caia_social, 'add_native_share_button_at_bottom'), $social_pri);
-	}
+  global $caia_social;
+  $social_pri = has_filter('the_content', array($caia_social, 'add_native_share_button_at_bottom'));
+  if ($social_pri !== false) {
+    remove_filter('the_content', array($caia_social, 'add_native_share_button_at_bottom'), $social_pri);
+  }
 }
 
 
 // Xóa post-info và post-meta
-remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
-remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
+remove_action('genesis_entry_header', 'genesis_post_info', 12);
+remove_action('genesis_entry_footer', 'genesis_post_meta');
 
 //Đưa ảnh lên trước tiêu đề
-remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-add_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
+remove_action('genesis_entry_content', 'genesis_do_post_image', 8);
+add_action('genesis_entry_header', 'genesis_do_post_image', 1);
 
 // remove_action( 'genesis_after_header', 'genesis_do_breadcrumbs',9);
-remove_action( 'genesis_loop', 'genesis_do_loop' );
-remove_action('genesis_before_footer','caia_add_content_after_footer',8);
+remove_action('genesis_loop', 'genesis_do_loop');
+remove_action('genesis_before_footer', 'caia_add_content_after_footer', 8);
 
-add_action ('genesis_after_header' , 'add_page_banner');
-function add_page_banner() {
-    global $post;
+add_action('genesis_after_header', 'add_page_banner');
+function add_page_banner()
+{
+  global $post;
 
-    $images = rwmb_meta( 'anh_banner', ['size' => 'full'] ); 
+  $images = rwmb_meta('anh_banner', ['size' => 'full']);
 
-    echo '<div class="content-hero section">';
-    echo '  <div class="hero-image">';
+  echo '<div class="content-hero section">';
+  echo '  <div class="hero-image">';
 
-    if ( ! empty( $images ) ) {
-        foreach ( $images as $image ) {
-            echo '<img src="' . esc_url( $image['url'] ) . '" alt="' . esc_attr( $image['alt'] ) . '">';
-        }
+  if (! empty($images)) {
+    foreach ($images as $image) {
+      echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) . '">';
     }
+  }
 
-    echo '  </div>';
-    echo '<div class="content-breadcrumb">';
-    echo '  <h2 class="title">' . get_the_title() . '</h2>';
+  echo '  </div>';
+  echo '<div class="content-breadcrumb">';
+  echo '  <h2 class="title">' . get_the_title() . '</h2>';
 
-    echo do_shortcode('[breadcrumb]');
+  echo do_shortcode('[breadcrumb]');
 
-    echo '</div>';
-    echo '</div>';
+  echo '</div>';
+  echo '</div>';
 }
 
 
 add_action('genesis_loop', 'xhome_dual_posts_layout');
 
-function xhome_dual_posts_layout($left_cat = null, $right_cat = null, $count = 4) {
+function xhome_dual_posts_layout($left_cat = null, $right_cat = null, $count = 4)
+{
 
   echo '<div class="content-blog">';
   echo '<h2 class="page-title">' . esc_html(get_the_title(get_queried_object_id())) . '</h2>';
@@ -136,7 +140,7 @@ function xhome_dual_posts_layout($left_cat = null, $right_cat = null, $count = 4
     'ignore_sticky_posts' => true,
     'cat'                 => $right_cat_id ?: 0,
   ));
-  ?>
+?>
 
   <section class="xhome-dual-posts">
     <div class="xhome-dual-posts__row">
@@ -151,9 +155,9 @@ function xhome_dual_posts_layout($left_cat = null, $right_cat = null, $count = 4
                 <a class="xhome-dual-posts__left-link" href="<?php the_permalink(); ?>">
                   <?php if ($img) : ?>
                     <img class="xhome-dual-posts__left-img"
-                         src="<?php echo esc_url($img); ?>"
-                         alt="<?php the_title_attribute(); ?>"
-                         loading="lazy">
+                      src="<?php echo esc_url($img); ?>"
+                      alt="<?php the_title_attribute(); ?>"
+                      loading="lazy">
                   <?php endif; ?>
                   <h3 class="xhome-dual-posts__left-title"><?php echo esc_html(get_the_title()); ?></h3>
                 </a>
@@ -176,15 +180,23 @@ function xhome_dual_posts_layout($left_cat = null, $right_cat = null, $count = 4
                 <?php if ($thumb) : ?>
                   <a class="xhome-dual-posts__right-thumb" href="<?php the_permalink(); ?>">
                     <img class="xhome-dual-posts__right-img"
-                         src="<?php echo esc_url($thumb); ?>"
-                         alt="<?php the_title_attribute(); ?>"
-                         loading="lazy">
+                      src="<?php echo esc_url($thumb); ?>"
+                      alt="<?php the_title_attribute(); ?>"
+                      loading="lazy">
                   </a>
                 <?php endif; ?>
                 <div class="xhome-dual-posts__right-content">
                   <a class="xhome-dual-posts__right-link" href="<?php the_permalink(); ?>">
                     <h4 class="xhome-dual-posts__right-title"><?php echo esc_html(get_the_title()); ?></h4>
                   </a>
+                  <?php
+                  $excerpt = get_the_excerpt();
+                  if (! $excerpt) {
+                    $excerpt = wp_strip_all_tags(get_the_content());
+                    $excerpt = wp_trim_words($excerpt, 18, '...');
+                  }
+                  ?>
+                  <p class="xhome-dual-posts__right-excerpt"><?php echo esc_html($excerpt); ?></p>
                 </div>
               </article>
             <?php endwhile; ?>
@@ -203,78 +215,78 @@ function xhome_dual_posts_layout($left_cat = null, $right_cat = null, $count = 4
 }
 
 
-remove_action( 'genesis_loop', 'genesis_do_loop' );
-add_action ('genesis_loop' , 'add_page_blog');
-function add_page_blog() {
+remove_action('genesis_loop', 'genesis_do_loop');
+add_action('genesis_loop', 'add_page_blog');
+function add_page_blog()
+{
+  // Lấy tất cả danh mục có bài viết
+  $categories = get_categories(array(
+    'hide_empty' => true
+  ));
 
-    	if( is_active_sidebar( 'content-posts' ) ){
-		echo '<div class="content-posts section"><div class="wrap">';
-			dynamic_sidebar( 'Tin tức - Bài viết nổi bật' );
-		echo '</div></div>';
-	}
+  if (empty($categories)) return;
 
+  foreach ($categories as $category) {
 
-    // Lấy tất cả danh mục có bài viết
-    $categories = get_categories(array(
-        'hide_empty' => true
-    ));
+    // Query bài viết theo từng danh mục
+    $args = array(
+      'post_type'      => 'post',
+      'posts_per_page' => 6,
+      'cat'            => $category->term_id,
+      'post_status'    => 'publish'
+    );
 
-    if (empty($categories)) return;
+    $query = new WP_Query($args);
 
-    foreach ($categories as $category) {
+    if ($query->have_posts()) {
 
-        // Query bài viết theo từng danh mục
-        $args = array(
-            'post_type'      => 'post',
-            'posts_per_page' => 6,
-            'cat'            => $category->term_id,
-            'post_status'    => 'publish'
-        );
+      echo '<section class="blog-category">';
 
-        $query = new WP_Query($args);
+      // Tiêu đề danh mục
+      echo '<h2 class="category-title">' . esc_html($category->name) . '</h2>';
 
-        if ($query->have_posts()) {
+      echo '<div class="blog-grid">';
 
-            echo '<section class="blog-category">';
+      while ($query->have_posts()) {
+        $query->the_post(); ?>
 
-                // Tiêu đề danh mục
-                echo '<h2 class="category-title">' . esc_html($category->name) . '</h2>';
+        <article class="blog-item">
+          <a href="<?php the_permalink(); ?>">
+            <div class="thumb">
+              <?php
+              if (has_post_thumbnail()) {
+                the_post_thumbnail('medium');
+              }
+              ?>
+            </div>
 
-                echo '<div class="blog-grid">';
+            <h3 class="title"><?php the_title(); ?></h3>
+            <?php
+            $excerpt = get_the_excerpt();
+            if (! $excerpt) {
+              $excerpt = wp_strip_all_tags(get_the_content());
+              $excerpt = wp_trim_words($excerpt, 18, '...');
+            }
+            ?>
+            <p class="excerpt"><?php echo esc_html($excerpt); ?></p>
+          </a>
+        </article>
 
-                while ($query->have_posts()) {
-                    $query->the_post(); ?>
+<?php }
 
-                    <article class="blog-item">
-                        <a href="<?php the_permalink(); ?>">
-                            <div class="thumb">
-                                <?php 
-                                if (has_post_thumbnail()) {
-                                    the_post_thumbnail('medium');
-                                }
-                                ?>
-                            </div>
+      echo '</div>';
+      echo '</section>';
 
-                            <h3 class="title"><?php the_title(); ?></h3>
-                        </a>
-                    </article>
-
-                <?php }
-
-                echo '</div>'; 
-            echo '</section>';
-
-            wp_reset_postdata();
-        }
+      wp_reset_postdata();
     }
+  }
 }
 
 
 
 
 // Mobile
-if (wp_is_mobile() ){
-
+if (wp_is_mobile()) {
 }
 
 genesis();

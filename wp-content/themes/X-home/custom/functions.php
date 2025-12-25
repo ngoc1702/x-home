@@ -323,7 +323,7 @@ function my_custom_breadcrumb_shortcode() {
     // Thiết lập tham số breadcrumb
     $args = array(
         'home' => '<span class="home">Trang chủ</span>',
-        'sep'  => '<span aria-label="breadcrumb separator" class="label"> » </span>',
+        'sep'  => '<span aria-label="breadcrumb separator" class="label"> / </span>',
         'list_sep' => ', ',
         'prefix' => '<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList"><div class="wrap"><div class="thanhdieuhuong">',
         'suffix' => '</div></div></div>',

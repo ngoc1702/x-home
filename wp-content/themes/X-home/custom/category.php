@@ -69,7 +69,14 @@ function custom_category_loop() {
                     <h3 class="blog-title">
                         <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                     </h3>
-
+                 <?php
+            $excerpt = get_the_excerpt();
+            if (! $excerpt) {
+              $excerpt = wp_strip_all_tags(get_the_content());
+              $excerpt = wp_trim_words($excerpt, 18, '...');
+            }
+            ?>
+            <p class="excerpt"><?php echo esc_html($excerpt); ?></p>
                
                 </div>
 
