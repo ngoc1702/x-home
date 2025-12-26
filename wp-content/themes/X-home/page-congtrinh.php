@@ -36,6 +36,32 @@ remove_action('genesis_loop', 'genesis_do_loop');
 // Bỏ content after footer
 remove_action('genesis_before_footer', 'caia_add_content_after_footer', 8);
 
+add_action('genesis_after_header', 'add_page_banner',);
+function add_page_banner()
+{
+    global $post;
+
+    $images = rwmb_meta('anh_banner', ['size' => 'full']);
+
+    echo '<div class="content-hero section">';
+    echo '  <div class="hero-image">';
+
+    if (! empty($images)) {
+        foreach ($images as $image) {
+            echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) . '">';
+        }
+    }
+
+    echo '  </div>';
+    echo '<div class="content-breadcrumb">';
+    echo '  <h2 class="title">' . get_the_title() . '</h2>';
+
+    echo do_shortcode('[breadcrumb]');
+
+    echo '</div>';
+    echo '</div>';
+}
+
 
 add_action('genesis_before_footer', 'caia_project_archive_loop', 7);
 function caia_project_archive_loop() {

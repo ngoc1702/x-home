@@ -195,6 +195,13 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
+		'id'			=> 'content-vechungtoigt',
+		'name'			=> 'Giới thiệu - Về chúng tôi',
+	)
+);
+
+genesis_register_sidebar( 
+	array(
 		'id'			=> 'content-posts',
 		'name'			=> 'Tin tức - Bài viết nổi bật',
 	)
@@ -745,3 +752,60 @@ add_action( 'widgets_init', 'register_shop_sidebar' );
 add_filter( 'woocommerce_show_page_title', '__return_false' );
 
 
+add_action('save_post', function($post_id){
+
+  // 1) Bỏ qua autosave/revision
+  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+  if ( wp_is_post_revision($post_id) ) return;
+
+  // 2) Check nonce (bắt buộc bạn phải tạo nonce trong metabox)
+  if ( ! isset($_POST['your_nonce_name']) || ! wp_verify_nonce($_POST['your_nonce_name'], 'your_nonce_action') ) {
+    return;
+  }
+
+  // 3) Check quyền
+  if ( ! current_user_can('edit_post', $post_id) ) return;
+
+  // 4) Allowlist SVG
+  $allowed_svg = [
+    'svg' => [
+      'xmlns' => true,
+      'width' => true,
+      'height' => true,
+      'viewbox' => true,
+      'fill' => true,
+      'class' => true,
+      'aria-hidden' => true,
+      'role' => true,
+      'focusable' => true,
+    ],
+    'path' => [
+      'd' => true,
+      'fill' => true,
+      'fill-rule' => true,
+      'clip-rule' => true,
+      'stroke' => true,
+      'stroke-width' => true,
+      'stroke-linecap' => true,
+      'stroke-linejoin' => true,
+    ],
+    'g' => [
+      'fill' => true,
+      'stroke' => true,
+      'transform' => true,
+      'clip-path' => true
+    ],
+    'defs' => [],
+    'clippath' => [ 'id' => true ], 
+    'rect' => [
+      'x' => true,'y' => true,'width' => true,'height' => true,
+      'rx' => true,'ry' => true,'fill' => true
+    ],
+  ];
+
+  // 5) Lưu meta
+  $raw   = wp_unslash($_POST['your_meta_key'] ?? '');
+  $clean = wp_kses($raw, $allowed_svg);
+  update_post_meta($post_id, 'your_meta_key', $clean);
+
+});

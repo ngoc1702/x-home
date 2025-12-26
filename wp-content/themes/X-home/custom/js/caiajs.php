@@ -103,6 +103,54 @@ function caia_add_file_jquery()
   </script>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll('.card-item');
+  const tabs  = document.querySelectorAll('.giaithuong-tab');
+
+  let current = 0;
+  let timer = null;
+  const delay = 6000;
+
+  function activate(index){
+    if(index === current) return;
+
+    cards[current].classList.remove('active');
+    tabs[current].classList.remove('tab-active');
+
+    cards[index].classList.add('active');
+    tabs[index].classList.add('tab-active');
+
+    current = index;
+  }
+
+  function autoPlay(){
+    timer = setInterval(() => {
+      activate((current + 1) % cards.length);
+    }, delay);
+  }
+
+  function resetAuto(){
+    clearInterval(timer);
+    autoPlay();
+  }
+
+  // Init
+  cards[0].classList.add('active');
+  tabs[0].classList.add('tab-active');
+  autoPlay();
+
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>{
+      activate(i);
+      resetAuto();
+    });
+  });
+});
+</script>
+
+
+
   <script>
     jQuery(document).ready(function($) {
       $(".xhome-dual-posts__left-list").slick({
@@ -303,6 +351,52 @@ function caia_add_file_jquery()
     });
 
 
+    jQuery(function($) {
+      const $s = $(".content-doingu .doingu-wrapper");
+
+      if ($s.hasClass("slick-initialized")) $s.slick("unslick");
+
+      $s.slick({
+        arrows: true,
+        dots: true,
+        speed: 600,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        pauseOnHover: false,
+        pauseOnFocus: false,
+        infinite: true,
+
+        centerMode: true,
+        centerPadding: "0px",
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        focusOnSelect: true,
+
+
+        responsive: [{
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 1,
+              centerPadding: "60px"
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 1,
+              centerPadding: "24px",
+              arrows: false
+            }
+          },
+        ],
+      });
+
+      $(window).on("load resize", function() {
+        $s.slick("setPosition");
+      });
+    });
+
+
     jQuery(document).ready(function($) {
       $(".content-feedback .wrap").slick({
         arrows: true,
@@ -313,6 +407,26 @@ function caia_add_file_jquery()
         pauseOnHover: false,
         pauseOnFocus: false,
         slidesToShow: 1,
+        slidesToScroll: 1,
+        responsive: [{
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+          },
+        }, ],
+      });
+    });
+
+     jQuery(document).ready(function($) {
+      $(".content-doitac .doitac-wrapper").slick({
+        arrows: false,
+        dots: true,
+        speed: 600,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        pauseOnHover: false,
+        pauseOnFocus: false,
+        slidesToShow: 5,
         slidesToScroll: 1,
         responsive: [{
           breakpoint: 768,

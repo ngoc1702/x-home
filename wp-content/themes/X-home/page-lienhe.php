@@ -36,6 +36,32 @@ remove_action('genesis_loop', 'genesis_do_loop');
 add_action('genesis_loop', 'caia_add_lienhe');
 
 
+add_action('genesis_after_header', 'add_page_banner',);
+function add_page_banner()
+{
+    global $post;
+
+    $images = rwmb_meta('anh_banner', ['size' => 'full']);
+
+    echo '<div class="content-hero section">';
+    echo '  <div class="hero-image">';
+
+    if (! empty($images)) {
+        foreach ($images as $image) {
+            echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) . '">';
+        }
+    }
+
+    echo '  </div>';
+    echo '<div class="content-breadcrumb">';
+    echo '  <h2 class="title">' . get_the_title() . '</h2>';
+
+    echo do_shortcode('[breadcrumb]');
+
+    echo '</div>';
+    echo '</div>';
+}
+
 function caia_add_lienhe()
 {
 	global $post;
