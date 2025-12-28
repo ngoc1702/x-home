@@ -78,7 +78,9 @@ function caia_project_archive_loop() {
 
     if ( $query->have_posts() ) {
 
-        echo '<div class="page_congtrinh section"><div class="wrap"><div class="main-posts">';
+        echo '<div class="page_congtrinh section"><div class="wrap">
+         <h2>Tất cả công trình</h2>
+        <div class="main-posts">';
 
         while ( $query->have_posts() ) {
             $query->the_post();

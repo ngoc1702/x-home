@@ -438,6 +438,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    
+    // jQuery(document).ready(function($) {
+    //   $(".adsdigi-pdp__thumbs").slick({
+    //     arrows: false,
+    //     dots: false,
+    //     speed: 600,
+    //     autoplay: true,
+    //     autoplaySpeed: 5000,
+    //     pauseOnHover: false,
+    //     pauseOnFocus: false,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 1,
+    //     responsive: [{
+    //       breakpoint: 768,
+    //       settings: {
+    //         slidesToShow: 1,
+    //       },
+    //     }, ],
+    //   });
+    // });
+
+
     jQuery(document).ready(function($) {
       function initSlickForMobile(selector, options) {
         if ($(window).width() < 768) {
@@ -798,6 +820,169 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   </script>
 
+<script>
+jQuery(function ($) {
+  const $form = $('form.variations_form');
+  if (!$form.length) return;
 
+  function setAttrByKey(attrKey, attrVal){
+    // attrKey: attribute_pa_mau-sac
+    const $select = $form.find(`select[name="${attrKey}"]`);
+    if ($select.length){
+      $select.val(attrVal).trigger('change');
+    } else {
+      $form.trigger('check_variations');
+    }
+  }
+
+  function setMainImage(src, srcset, sizes){
+    const $img = $('.custom-main-img').first();
+    if(!$img.length) return;
+    if(src) $img.attr('src', src);
+    if(srcset !== undefined) $img.attr('srcset', srcset || '');
+    if(sizes !== undefined) $img.attr('sizes', sizes || '');
+  }
+
+  // Click thumb ảnh
+  $(document).on('click', '.custom-variation-thumb', function(){
+    const $btn = $(this);
+    $('.custom-variation-thumb').removeClass('is-active');
+    $btn.addClass('is-active');
+
+    // đổi ảnh ngay
+    const $img = $btn.find('img').first();
+    if($img.length){
+      setMainImage($img.attr('src'));
+    }
+
+    // set variation attribute -> Woo tự update giá
+    setAttrByKey($btn.data('attr-key'), $btn.data('attr-val'));
+  });
+
+  // Khi Woo found variation -> sync ảnh + active thumb + giá
+  $form.on('found_variation', function (e, variation) {
+    if (variation && variation.image && variation.image.src) {
+      setMainImage(variation.image.src, variation.image.srcset, variation.image.sizes);
+    }
+    if (variation && variation.image_id) {
+      $('.custom-variation-thumb').removeClass('is-active');
+      $(`.custom-variation-thumb[data-image-id="${variation.image_id}"]`).addClass('is-active');
+    }
+    if (variation && variation.price_html) {
+      $('.custom-variation-price').html(variation.price_html);
+      $('.custom-base-price').hide();
+    }
+  });
+
+  $form.on('reset_data hide_variation', function(){
+    $('.custom-variation-price').empty();
+    $('.custom-base-price').show();
+  });
+});
+
+
+</script>
+
+
+<script>
+  jQuery(function($){
+  const el = document.querySelector('.adsdigi-pdp__thumbs');
+  if(!el) return;
+
+  // Nếu còn slick thì tắt để khỏi xung đột
+  if (window.jQuery && $(el).hasClass('slick-initialized')) {
+    $(el).slick('unslick');
+  }
+
+  let isDown = false;
+  let startX = 0;
+  let startScrollLeft = 0;
+
+  // velocity cho inertia
+  let vx = 0;
+  let lastX = 0;
+  let lastT = 0;
+  let raf = null;
+
+  // chỉnh độ mượt
+  const DRAG_SPEED = 1.0;   // kéo nhanh/chậm
+  const FRICTION   = 0.92;  // 0.90-0.96 (cao = trôi lâu, mượt hơn)
+  const STOP_V     = 0.08;  // ngưỡng dừng
+
+  function animate(){
+    el.scrollLeft += vx;
+    vx *= FRICTION;
+
+    if (Math.abs(vx) > STOP_V) {
+      raf = requestAnimationFrame(animate);
+    } else {
+      vx = 0;
+      raf = null;
+    }
+  }
+
+  function onDown(e){
+    isDown = true;
+    el.classList.add('is-dragging');
+
+    // stop inertia đang chạy
+    if (raf) { cancelAnimationFrame(raf); raf = null; vx = 0; }
+
+    startX = (e.touches ? e.touches[0].pageX : e.pageX);
+    startScrollLeft = el.scrollLeft;
+
+    lastX = startX;
+    lastT = performance.now();
+  }
+
+  function onMove(e){
+    if(!isDown) return;
+
+    const x = (e.touches ? e.touches[0].pageX : e.pageX);
+    const dx = x - startX;
+
+    // kéo content
+    el.scrollLeft = startScrollLeft - dx * DRAG_SPEED;
+
+    // tính velocity
+    const now = performance.now();
+    const dt = Math.max(16, now - lastT);
+    const vxNow = (lastX - x) / dt * 16; // chuẩn hoá theo ~60fps
+
+    vx = vxNow;
+    lastX = x;
+    lastT = now;
+
+    // chặn việc “kéo” gây select text / drag ảnh
+    e.preventDefault?.();
+  }
+
+  function onUp(){
+    if(!isDown) return;
+    isDown = false;
+    el.classList.remove('is-dragging');
+
+    // inertia
+    if (Math.abs(vx) > STOP_V && !raf) {
+      raf = requestAnimationFrame(animate);
+    }
+  }
+
+  // Mouse
+  el.addEventListener('mousedown', onDown);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+  window.addEventListener('mouseleave', onUp);
+
+  // Touch
+  el.addEventListener('touchstart', onDown, {passive:false});
+  el.addEventListener('touchmove', onMove, {passive:false});
+  el.addEventListener('touchend', onUp);
+
+  // Chặn drag ảnh mặc định
+  el.querySelectorAll('img').forEach(img => img.setAttribute('draggable','false'));
+});
+
+</script>
 <?php
 }

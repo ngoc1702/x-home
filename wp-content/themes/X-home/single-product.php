@@ -1,11 +1,10 @@
 <?php
-add_filter( 'genesis_pre_get_option_site_layout', 'adsdigi_site_layout' );
-function adsdigi_site_layout( $layout ) {
-    // Áp dụng cho category archive 
-        $layout = 'content-sidebar'; // hoặc 'sidebar-content'   
-    return $layout;
+add_filter( 'genesis_pre_get_option_site_layout', 'caia_cpt_layout' );
+function caia_cpt_layout() {
+  return 'full-width-content';
 }
 
+//  remove_action( 'genesis_loop', 'genesis_do_loop' );
 // Xóa post-info và post-meta của Genesis
 remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
 remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
@@ -37,136 +36,247 @@ function caia_add_content_post_meta(){
 	echo '</div>';
 }
 
+add_action('genesis_after_header', 'add_page_banner');
+function add_page_banner() {
+    global $post;
 
-
-// Custom layout cho trang sản phẩm
-add_action( 'genesis_before_content_sidebar_wrap', 'add_thongtin_sp' );
-function add_thongtin_sp() {
-  global $product;
-
-    // Đảm bảo $product luôn là WC_Product
-    if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
-        $product = wc_get_product( get_the_ID() );
+    echo '<section class="content-hero section">';
+    echo '  <div class="hero-image">';
+    if ( ( is_shop() || is_product_taxonomy() ) && is_active_sidebar('shop-sidebar') ) {
+        dynamic_sidebar('shop-sidebar');
+    }
+    elseif ( is_search() && is_active_sidebar('shop-sidebar') ) {
+        dynamic_sidebar('shop-sidebar');
+    }
+    else {
+        $images = function_exists('rwmb_meta') ? rwmb_meta('anh_banner', ['size' => 'full']) : [];
+        if ( ! empty($images) ) {
+            foreach ( $images as $image ) {
+                echo '<img src="' . esc_url( $image['url'] ) . '" alt="' . esc_attr( $image['alt'] ) . '">';
+            }
+        } else {
+            echo '<img src="' . esc_url( get_stylesheet_directory_uri() . '/images/default-banner.jpg' ) . '" alt="Banner">';
+        }
     }
 
-    if ( ! $product ) return;
-
-    $anhsp         = rwmb_meta('anhsp'); 
-    $regular_price = $product->get_regular_price() ? wc_price($product->get_regular_price()) : '';
-    $sale_price    = $product->get_sale_price() ? wc_price($product->get_sale_price()) : '';
-    $excerpt       = get_the_excerpt();
-
-	echo '<div class="content-sanpham">';
-
-		// Cột trái: Slider
-		echo '<div class="slide_sp">';
-
-			// Slider chính
-			if ( !empty($anhsp) ) {
-    echo '<div class="slider-for">';
-    foreach ( $anhsp as $image ) {
-        echo '<img src="' . esc_url( $image['full_url'] ) . '" alt="">';
+    echo '  </div>'; 
+    echo '  <div class="content-breadcrumb">';
+    echo '      <div class="breadcrumb-inner">';
+    
+    if ( is_shop() ) {
+        echo '          <h2 class="title">Sản phẩm</h2>';
+    } elseif ( is_product_taxonomy() ) {
+        echo '          <h2 class="title">' . single_term_title('', false) . '</h2>';
+    } elseif ( is_search() ) {
+        echo '          <h2 class="title">Kết quả tìm kiếm</h2>';
+    } else {
+        echo '          <h2 class="title">' . get_the_title() . '</h2>';
     }
-    echo '</div>';
 
-    // Slider nav
-    echo '<div class="slider-nav">';
-    foreach ( $anhsp as $image ) {
-        echo '<img src="' . esc_url( $image['full_url'] ) . '" alt="">';
-    }
-    echo '</div>';
-} else {
-    // Nếu không có ảnh metabox, lấy ảnh đại diện sản phẩm
-    $thumb_id = get_post_thumbnail_id( get_the_ID() );
-    if ( $thumb_id ) {
-        $thumb_url = wp_get_attachment_image_url( $thumb_id, 'full' );
-        echo '<div class="slider-for">';
-            echo '<img src="' . esc_url( $thumb_url ) . '" alt="">';
-        echo '</div>';
-        echo '<div class="slider-nav">';
-            echo '<img src="' . esc_url( $thumb_url ) . '" alt="">';
-        echo '</div>';
-    }
+    echo              do_shortcode('[breadcrumb]');
+    echo '      </div>';
+    echo '  </div>'; 
+
+    echo '</section>'; 
 }
 
-		echo '</div>'; 
+remove_action('genesis_loop', 'genesis_do_loop');
+add_action('genesis_loop', 'add_thongtin_sp');
 
+function add_thongtin_sp() {
+	if ( ! function_exists('is_product') || ! is_product() ) return;
 
-		echo '<div class="info_sp">';
+	global $post, $product;
 
+	if ( ! $post || empty($post->ID) ) return;
 
-			echo '<h1 class="product-title">' . get_the_title() . '</h1>';
+	if ( function_exists('wc_setup_product_data') ) {
+		wc_setup_product_data($post);
+	}
+	$product = wc_get_product($post->ID);
+	if ( ! $product ) return;
 
+	$color_tax = 'pa_mau-sac';
+	$attr_key  = 'attribute_' . $color_tax; // attribute_pa_mau-sac
 
-			// echo '<div class="product-price">';
-			// 	echo '<span class="price-label">Giá: </span>';
-			// 	if ( $sale_price ) {
-			// 		echo '<span class="price-new">' . $sale_price . '</span>';
-			// 		echo '<span class="price-old"><strike>' . $regular_price . '</strike></span>';   
-			// 	} else {
-			// 		echo '<span class="price-current">' . $regular_price . '</span>';
-			// 	}
-			// echo '</div>';
+	// Map variation -> image
+	$variation_map = [];
+	if ( $product instanceof WC_Product_Variable ) {
+		foreach ( $product->get_available_variations() as $v ) {
+			$vid    = (int) ($v['variation_id'] ?? 0);
+			$img_id = (int) ($v['image_id'] ?? 0);
+			if ( ! $vid || ! $img_id ) continue;
 
+			$attrs = is_array($v['attributes'] ?? null) ? $v['attributes'] : [];
+			$val   = (string) ($attrs[$attr_key] ?? '');
+			if ( $val === '' ) continue;
 
-			if ( $excerpt ) {
-				echo '<div class="product-excerpt">' . $excerpt . '</div>';
+			$variation_map[] = [
+				'variation_id' => $vid,
+				'image_id'     => $img_id,
+				'attr_key'     => $attr_key,
+				'attr_val'     => $val,
+			];
+		}
+	}
+
+	// Active image theo default color
+	$active_img_id = (int) $product->get_image_id();
+	$default_attrs = $product->is_type('variable') ? (array) $product->get_default_attributes() : [];
+	$default_color = (string) ($default_attrs[$color_tax] ?? '');
+
+	if ( $default_color !== '' ) {
+		foreach ( $variation_map as $row ) {
+			if ( $row['attr_val'] === $default_color ) {
+				$active_img_id = (int) $row['image_id'];
+				break;
+			}
+		}
+	}
+	if ( ! $active_img_id && ! empty($variation_map) ) {
+		$active_img_id = (int) $variation_map[0]['image_id'];
+	}
+
+	echo '<section class="adsdigi-pdp">';
+
+		echo '<div id="product-' . esc_attr($product->get_id()) . '" class="' . esc_attr( implode(' ', wc_get_product_class('', $product) ) ) . '">';
+
+			do_action('woocommerce_before_single_product');
+
+			if ( post_password_required() ) {
+				echo get_the_password_form();
+				echo '</div></section>';
+				return;
 			}
 
+			echo '<div class="adsdigi-pdp__grid">';
 
-			// if ( is_active_sidebar( 'content-luuy' ) ) {
-			// 	echo '<div class="content-luuy section"><div class="wrap">';
-			// 		dynamic_sidebar( 'Sản phẩm - Lưu ý' );
-			// 	echo '</div></div>';
-			// }
+				// LEFT
+				echo '<div class="adsdigi-pdp__left">';
+					echo '<div class="adsdigi-pdp__main">';
+						if ( $active_img_id ) {
+							echo wp_get_attachment_image($active_img_id, 'large', false, ['class' => 'adsdigi-pdp__mainImg custom-main-img']);
+						} else {
+							echo wc_placeholder_img('large');
+						}
+					echo '</div>';
 
-			// Form mua hàng
-			echo '<div class="product-buy-form-wrap">';
-			// if ( $product->is_purchasable() && $product->is_in_stock() ) {
-			// 	echo '<div class="product-buy-form">';
-			// 		woocommerce_template_single_add_to_cart();
-			// 	echo '</div>';
-			// }
-			echo '<p class="btn_call"><a href="tel: 0963797000">Liên hệ</a></p>';
-			echo '<p class="btn_baogia"><a >Báo giá</a></p>';
-            echo '</div>'; 
-		echo '</div>'; 
+					echo '<div class="adsdigi-pdp__thumbs custom-variation-thumbs" aria-label="Ảnh theo màu">';
+						foreach ( $variation_map as $row ) {
+							$is_active = ((int)$row['image_id'] === (int)$active_img_id) ? ' is-active' : '';
+							$thumb = wp_get_attachment_image((int)$row['image_id'], 'woocommerce_thumbnail', false, [
+								'class' => 'adsdigi-pdp__thumbImg custom-variation-thumb-img',
+							]);
 
-	echo '</div>'; 
+							echo '<button type="button" class="adsdigi-pdp__thumb custom-variation-thumb' . esc_attr($is_active) . '"'
+								. ' data-variation-id="' . esc_attr($row['variation_id']) . '"'
+								. ' data-attr-key="' . esc_attr($row['attr_key']) . '"'
+								. ' data-attr-val="' . esc_attr($row['attr_val']) . '"'
+								. ' data-image-id="' . esc_attr($row['image_id']) . '">'
+								. $thumb
+								. '</button>';
+						}
+					echo '</div>';
+				echo '</div>';
+
+				// RIGHT
+				echo '<div class="adsdigi-pdp__right">';
+				// ===== Thông tin thêm: Kích thước + Thương hiệu =====
+$length = $product->get_length();
+$width  = $product->get_width();
+$height = $product->get_height();
+$unit   = get_option('woocommerce_dimension_unit');
+
+$brand_text = '';
+// Nếu bạn dùng taxonomy brand phổ biến: product_brand / pa_thuong-hieu / yith_product_brand...
+$brand_terms = get_the_terms($product->get_id(), 'product_brand');
+if ( ! empty($brand_terms) && ! is_wp_error($brand_terms) ) {
+  $brand_text = join(', ', wp_list_pluck($brand_terms, 'name'));
 }
 
-// Thêm bài viết liên quan
-add_action('genesis_after_content_sidebar_wrap', 'caia_add_product_YARPP', 9);
-function caia_add_product_YARPP(){
-    if ( function_exists('yarpp_related') ) {
-        yarpp_related([
-            'post_type' => 'product',
-            'threshold' => 1,
-            'template' => 'yarpp-template-product.php',
-            'limit' => 4,
-        ]);
-    }
+
+
+
+					$cats = wc_get_product_category_list($product->get_id());
+					if ( $cats ) echo '<div class="adsdigi-pdp__cats">' . $cats . '</div>';
+
+					echo '<h1 class="adsdigi-pdp__title">' . esc_html( get_the_title($product->get_id()) ) . '</h1>';
+
+					echo '<div class="adsdigi-pdp__priceRow">';
+						// giá gốc
+						echo '<div class="custom-base-price adsdigi-pdp__price">';
+							woocommerce_template_single_price();
+						echo '</div>';
+						// giá variation sẽ được Woo/JS cập nhật nếu bạn dùng
+						echo '<div class="custom-variation-price adsdigi-pdp__priceVar"></div>';
+					echo '</div>';
+
+					echo '<div class="adsdigi-pdp__rating">';
+						woocommerce_template_single_rating();
+					echo '</div>';
+
+					echo '<div class="adsdigi-pdp__excerpt">';
+						woocommerce_template_single_excerpt();
+					echo '</div>';
+
+						// Render
+echo '<div class="adsdigi-pdp__specs">';
+
+  if ( $length || $width || $height ) {
+    echo '<div class="adsdigi-pdp__spec">';
+      echo '<span class="adsdigi-pdp__specLabel">Kích thước:</span> ';
+      echo '<span class="adsdigi-pdp__specVal">'
+        . esc_html($length) . ' x ' . esc_html($width) . ' x ' . esc_html($height)
+        . ($unit ? ' ' . esc_html($unit) : '')
+        . '</span>';
+    echo '</div>';
+  }
+
+  if ( $brand_text ) {
+    echo '<div class="adsdigi-pdp__spec">';
+      echo '<span class="adsdigi-pdp__specLabel">Thương hiệu:</span> ';
+      echo '<span class="adsdigi-pdp__specVal">' . esc_html($brand_text) . '</span>';
+    echo '</div>';
+  }
+
+echo '</div>';
+
+					
+
+				echo '<div class="adsdigi-pdp__buy">';
+
+  // Woo add-to-cart (giữ nguyên để vẫn hoạt động)
+  woocommerce_template_single_add_to_cart();
+
+  // Nút custom
+  echo '<div class="adsdigi-pdp__ctaRow">';
+    echo '<a class="adsdigi-btn adsdigi-btn--secondary" href="#tu-van-bao-gia">TƯ VẤN BÁO GIÁ</a>';
+  echo '</div>';
+
+  echo '<div class="adsdigi-pdp__ctaRow adsdigi-pdp__ctaRow--full">';
+    echo '<a class="adsdigi-btn adsdigi-btn--outline" href="#dat-hang-tu-van">ĐẶT HÀNG TƯ VẤN THEO YÊU CẦU</a>';
+  echo '</div>';
+
+echo '</div>';
+
+
+				
+
+				echo '</div>';
+
+			echo '</div>'; // grid
+
+			echo '<div class="adsdigi-pdp__below">';
+				woocommerce_output_product_data_tabs();
+			echo '</div>';
+
+			do_action('woocommerce_after_single_product');
+
+		echo '</div>'; // #product
+	echo '</section>';
 }
 
 
-// Thêm khu vực tư vấn
-add_action('genesis_before_sidebar_widget_area', 'add_product_info');
-function add_product_info(){
-	if ( is_active_sidebar( 'content-tuvan' ) ){
-		echo '<div class="content-tuvan section"><div class="wrap">';
-			dynamic_sidebar( 'Sản phẩm - Hỗ trợ tư vấn' );
-		echo '</div></div>';
-	}
-}
 
-// Thêm khu vực hỗ trợ mua hàng
-add_action('genesis_before_sidebar_widget_area', 'add_product_muahang');
-function add_product_muahang(){
-	if ( is_active_sidebar( 'content-muahang' ) ){
-		echo '<div class="content-muahang section"><div class="wrap">';
-			dynamic_sidebar( 'Sản phẩm - Hỗ trợ mua hàng' );
-		echo '</div></div>';
-	}
-}
 
 genesis();

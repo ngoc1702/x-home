@@ -63,8 +63,16 @@ function add_page_banner()
 }
 
 
+
+
+
 add_action('genesis_before_footer', 'caia_project_archive_loop', 7);
 function caia_project_archive_loop() {
+    	if (is_active_sidebar('content-dichvu')) {
+		echo '<div  class="content-dichvu section"><div class="wrap">';
+		dynamic_sidebar('Trang chủ - Dịch vụ');
+		echo '</div></div>';
+	}
 
     $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
@@ -78,7 +86,9 @@ function caia_project_archive_loop() {
 
     if ( $query->have_posts() ) {
 
-        echo '<div class="page_congtrinh section"><div class="wrap"><div class="main-posts">';
+        echo '<div class="page_congtrinh section"><div class="wrap">
+        <h2>Công trình nổi bật</h2>
+        <div class="main-posts">';
 
         while ( $query->have_posts() ) {
             $query->the_post();
@@ -108,20 +118,23 @@ function caia_project_archive_loop() {
         }
 
         echo '</div></div>'; 
-         echo '<div class="pagination">';
-        echo paginate_links( [
-            'total'     => $query->max_num_pages,
-            'current'   => $paged,
-            'type'      => 'list',
-            'prev_next' => false,
-        ] );
-        echo '</div></div>';
-
-        // Phân trang
-       
-
+         echo '</div>';
+        //  echo '<div class="pagination">';
+        // echo paginate_links( [
+        //     'total'     => $query->max_num_pages,
+        //     'current'   => $paged,
+        //     'type'      => 'list',
+        //     'prev_next' => false,
+        // ] );
+        // echo '</div></div>';
         wp_reset_postdata();
     }
+
+    	if (is_active_sidebar('content-dangky')) {
+		echo '<div  class="content-dangky section"><div class="wrap">';
+		dynamic_sidebar('Trang chủ - Đăng ký tư vấn');
+		echo '</div></div>';
+	}
 }
 
 // Mobile

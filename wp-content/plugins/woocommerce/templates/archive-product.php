@@ -41,7 +41,7 @@ function add_page_banner() {
     echo '      <div class="breadcrumb-inner">';
     
     if ( is_shop() ) {
-        echo '          <h2 class="title">Cửa hàng</h2>';
+        echo '          <h2 class="title">Sản phẩm</h2>';
     } elseif ( is_product_taxonomy() ) {
         echo '          <h2 class="title">' . single_term_title('', false) . '</h2>';
     } elseif ( is_search() ) {

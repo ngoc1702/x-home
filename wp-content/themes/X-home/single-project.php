@@ -24,7 +24,7 @@ function remove_caia_rating(){
     }
 }
 
-// Thêm thông tin dưới nội dung bài viết
+
 //add_action('genesis_entry_footer', 'caia_add_content_post_meta', 1);
 function caia_add_content_post_meta(){
     echo '<div class="content-info-meta section">';
@@ -111,5 +111,20 @@ function project_gallery_lightbox_html() {
 
     return ob_get_clean();
 }
+
+// Thêm bài viết liên quan
+add_action('genesis_after_content_sidebar_wrap', 'caia_add_product_YARPP', 9);
+function caia_add_product_YARPP()
+{
+    if (function_exists('yarpp_related')) {
+        yarpp_related([
+            'post_type' => 'project',
+            'threshold' => 1,
+            'template' => 'yarpp-template-project.php',
+            'limit' => 3,
+        ]);
+    }
+}
+
 
 genesis();
