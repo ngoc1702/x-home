@@ -204,7 +204,7 @@ if ( ! empty($brand_terms) && ! is_wp_error($brand_terms) ) {
 
 					echo '<div class="adsdigi-pdp__priceRow">';
 						// giá gốc
-						echo '<div class="custom-base-price adsdigi-pdp__price">';
+						echo '<span>Giá:</span></span><div class="custom-base-price adsdigi-pdp__price">';
 							woocommerce_template_single_price();
 						echo '</div>';
 						// giá variation sẽ được Woo/JS cập nhật nếu bạn dùng

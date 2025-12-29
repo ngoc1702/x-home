@@ -3831,19 +3831,33 @@ input#submit {
 
 
 /* RIGHT */
-.adsdigi-pdp__cats {
-  opacity: .7;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  font-size: 12px;
-  margin-bottom: 8px;
+.adsdigi-pdp__cats a{
+color: #FFF;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+text-transform: uppercase;
+
 }
 
 .adsdigi-pdp__title {
-  font-size: 28px;
-  line-height: 1.15;
-  margin: 0 0 14px;
-  font-weight: 700;
+  color: var(--main, #C5A47E);
+font-size: 36px;
+font-style: normal;
+font-weight: 700;
+line-height: 50px; 
+text-transform: uppercase;
+margin-top: 12px;
+}
+
+.woocommerce:where(body:not(.woocommerce-uses-block-theme)) div.product p.price, .woocommerce:where(body:not(.woocommerce-uses-block-theme)) div.product span.price
+ {
+    color: #FFF;
+font-size: 28px;
+font-style: normal;
+font-weight: 600;
+line-height: 50px; 
 }
 
 .adsdigi-pdp__priceRow {
@@ -3967,12 +3981,14 @@ input#submit {
 }
 
 .adsdigi-pdp__spec {
-  margin: 6px 0;
+  margin: 10px 0 6px;
 }
 
-.adsdigi-pdp__specLabel {
-  opacity: .75;
+.variations label{
+  color: #FFF;
+  font-weight: 400 !important;
 }
+
 
 .adsdigi-pdp__specVal {
   font-weight: 600;
@@ -4000,8 +4016,8 @@ input#submit {
 
 .adsdigi-pdp__buy .woocommerce-variation-add-to-cart .quantity::before {
   content: "Số lượng:" !important;
-  color: rgba(255, 255, 255, .75) !important;
-  font-weight: 600 !important;
+  color: #FFF !important;
+  font-weight: 400 !important;
   white-space: nowrap !important;
 }
 
@@ -4081,4 +4097,9 @@ input#submit {
 
 .adsdigi-pdp__below {
   display: none;
+}
+
+.woo-variation-swatches .wvs-style-rounded.variable-items-wrapper .variable-item:not(.radio-variable-item){
+  width: 24px !important;
+  height: 24px !important;
 }
