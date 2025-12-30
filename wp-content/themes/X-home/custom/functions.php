@@ -216,6 +216,21 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
+		'id'			=> 'content-bosuutap',
+		'name'			=> 'Sản phẩm - Bộ sưu tập nội thất',
+	)
+);
+
+genesis_register_sidebar( 
+	array(
+		'id'			=> 'content-cauhoi',
+		'name'			=> 'Sản phẩm - Câu hỏi thường gặp',
+	)
+);
+
+
+genesis_register_sidebar( 
+	array(
 		'id'			=> 'content-camket',
 		'name'			=> 'Sản phẩm - Cam kết',
 	)
@@ -243,6 +258,9 @@ genesis_register_sidebar(
 		'name'			=> 'Toàn bộ - Nội dung cố định',
 	)
 );
+
+
+
 
 add_action('genesis_before_header','caia_add_contactus');
 function caia_add_contactus(){
@@ -788,7 +806,7 @@ add_filter('loop_shop_columns', function ($cols) {
 
 
 add_filter( 'loop_shop_per_page', function( $cols ) {
-	return 5;
+	return 15;
 }, 20 );
 
 add_filter( 'woocommerce_product_add_to_cart_text', function( $text, $product ) {

@@ -1010,5 +1010,56 @@ jQuery(function ($) {
 });
 
   </script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const faqWrap = document.querySelector(".content-cauhoi.section .wrap");
+  if (!faqWrap) return;
+
+  const items = faqWrap.querySelectorAll("section.widget_text:not(:first-child)");
+
+  // Đóng hết ban đầu
+  items.forEach(item => {
+    const content = item.querySelector(".textwidget");
+    if (content) content.style.maxHeight = "0px";
+  });
+
+  items.forEach((item) => {
+    const title = item.querySelector(".widget-title, .widgettitle");
+    const content = item.querySelector(".textwidget");
+    if (!title || !content) return;
+
+    title.style.cursor = "pointer";
+
+    title.addEventListener("click", () => {
+      const isOpen = item.classList.contains("active");
+
+      // Đóng tất cả
+      items.forEach((it) => {
+        const c = it.querySelector(".textwidget");
+        it.classList.remove("active");
+        if (c) c.style.maxHeight = "0px";
+      });
+
+      // Mở nếu trước đó đang đóng
+      if (!isOpen) {
+        item.classList.add("active");
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  });
+
+  // Nếu nội dung thay đổi kích thước (responsive), cập nhật lại maxHeight cho item đang mở
+  window.addEventListener("resize", () => {
+    const openItem = faqWrap.querySelector("section.widget_text.active");
+    if (!openItem) return;
+    const content = openItem.querySelector(".textwidget");
+    if (content) content.style.maxHeight = content.scrollHeight + "px";
+  });
+});
+</script>
+
+
 <?php
 }

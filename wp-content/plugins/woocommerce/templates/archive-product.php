@@ -138,8 +138,6 @@ function add_catergory_product() {
 	}
 
 	echo '    <div class="adsdigi-catbar__grid">';
-
-	// Bắt đầu từ parent = 0 (cha), rồi render hết con
 	$walk(0, 0);
 
 	echo '    </div>';
@@ -147,7 +145,9 @@ function add_catergory_product() {
 	echo '</section>';
 }
 
-get_header( 'shop' ); ?>
+
+
+	get_header( 'shop' ); ?>
 
 <div class="shop-wrapper">
   <h2 class="title">Tất cả sản phẩm</h2>
@@ -180,6 +180,22 @@ get_header( 'shop' ); ?>
   </div>
 
   <?php do_action( 'woocommerce_after_main_content' ); ?>
+ 
 </div>
 
+
+		 <?php if ( is_active_sidebar('content-bosuutap') ) {
+			echo '<div  class="content-bosuutap section"><div class="wrap">';
+			dynamic_sidebar('Sản phẩm - Bộ sưu tập nội thất');
+			echo '</div></div>';
+		}?>
+
+		 <?php if ( is_active_sidebar('content-cauhoi') ) {
+			echo '<div  class="content-cauhoi section"><div class="wrap">';
+			dynamic_sidebar('Sản phẩm - Câu hỏi thường gặp');
+			echo '</div></div>';
+		}?>
+
+
 <?php get_footer( 'shop' ); ?>
+
