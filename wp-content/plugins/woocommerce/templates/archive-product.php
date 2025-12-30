@@ -52,55 +52,134 @@ function add_page_banner() {
 
     echo              do_shortcode('[breadcrumb]');
     echo '      </div>';
-    echo '  </div>'; // end content-breadcrumb
-
-    echo '</section>'; // end content-hero
+    echo '  </div>'; 
+    echo '</section>'; 
 }
 
+add_action('genesis_after_header', 'add_catergory_product');
+function add_catergory_product() {
+
+	// Nếu bạn muốn hiện mọi trang thì bỏ điều kiện này
+	if ( ! function_exists('is_woocommerce') || ! is_woocommerce() ) {
+		return;
+	}
+
+	$cats = get_terms([
+		'taxonomy'   => 'product_cat',
+		'hide_empty' => false,      
+		'orderby'    => 'menu_order',
+		'order'      => 'ASC',
+	]);
+
+	if ( is_wp_error($cats) || empty($cats) ) return;
+
+	// Build tree: parent -> children
+	$by_parent = [];
+	foreach ($cats as $c) {
+		$pid = (int) $c->parent;
+		if (!isset($by_parent[$pid])) $by_parent[$pid] = [];
+		$by_parent[$pid][] = $c;
+	}
+
+	// Active term nếu đang ở trang taxonomy
+	$current_term_id = 0;
+	if ( function_exists('is_product_taxonomy') && is_product_taxonomy() ) {
+		$term = get_queried_object();
+		if ( $term && ! is_wp_error($term) && ! empty($term->term_id) ) {
+			$current_term_id = (int) $term->term_id;
+		}
+	}
+
+	// Render item
+	$render_item = function($cat, $depth = 0) use ($current_term_id) {
+		$link = get_term_link($cat);
+		if ( is_wp_error($link) ) return;
+
+		$is_active = ((int)$cat->term_id === $current_term_id) ? ' is-active' : '';
+		$depth_cls = ' depth-' . (int)$depth;
+
+		$thumb_id = (int) get_term_meta($cat->term_id, 'thumbnail_id', true);
+		if ($thumb_id) {
+			$img_html = wp_get_attachment_image(
+				$thumb_id,
+				'woocommerce_thumbnail',
+				false,
+				[
+					'class'   => 'adsdigi-catbar__img',
+					'alt'     => $cat->name,
+					'loading' => 'lazy',
+				]
+			);
+		} else {
+			$img_html = '<img class="adsdigi-catbar__img" src="' . esc_url(wc_placeholder_img_src('woocommerce_thumbnail')) . '" alt="' . esc_attr($cat->name) . '" loading="lazy">';
+		}
+
+		echo '<a class="adsdigi-catbar__item' . esc_attr($is_active . $depth_cls) . '" href="' . esc_url($link) . '">';
+		echo '  <span class="adsdigi-catbar__thumb">' . $img_html . '</span>';
+		echo '  <span class="adsdigi-catbar__name">' . esc_html($cat->name) . '</span>';
+		echo '</a>';
+	};
+
+	// Render tree recursively
+	$walk = function($parent_id, $depth = 0) use (&$walk, $by_parent, $render_item) {
+		if (empty($by_parent[$parent_id])) return;
+		foreach ($by_parent[$parent_id] as $cat) {
+			$render_item($cat, $depth);
+			$walk((int)$cat->term_id, $depth + 1);
+		}
+	};
+
+	echo '<section class="adsdigi-catbar section">';
+
+    	if (is_active_sidebar('content-danhmucsp')) {
+		echo '<div  class="content-danhmucsp section"><div class="wrap">';
+		dynamic_sidebar('Sản phẩm - Danh mục sản phẩm');
+		echo '</div></div>';
+	}
+
+	echo '    <div class="adsdigi-catbar__grid">';
+
+	// Bắt đầu từ parent = 0 (cha), rồi render hết con
+	$walk(0, 0);
+
+	echo '    </div>';
+
+	echo '</section>';
+}
 
 get_header( 'shop' ); ?>
+
 <div class="shop-wrapper">
-    <aside class="shop-sidebar">
-        <?php
-        // Sidebar filter custom
-        if ( is_active_sidebar('content-filter') ) {
-            dynamic_sidebar('content-filter');
-        } else {
-            the_widget( 'WC_Widget_Price_Filter' );
-        }
-        ?>
-    </aside>
+  <h2 class="title">Tất cả sản phẩm</h2>
 
-    <div class="shop-products">
-        <?php
-        do_action( 'woocommerce_before_main_content' );
+  <?php do_action( 'woocommerce_before_main_content' ); ?>
 
-        if ( woocommerce_product_loop() ) {
+  <div class="shop-products">
+    <?php if ( woocommerce_product_loop() ) : ?>
 
-            do_action( 'woocommerce_before_shop_loop' );
+      <?php do_action( 'woocommerce_before_shop_loop' ); ?>
 
-            woocommerce_product_loop_start();
+      <?php woocommerce_product_loop_start(); ?>
 
-            if ( wc_get_loop_prop( 'total' ) ) {
-                while ( have_posts() ) {
-                    the_post();
+        <?php if ( wc_get_loop_prop( 'total' ) ) : ?>
+          <?php while ( have_posts() ) : the_post(); ?>
+            <?php do_action( 'woocommerce_shop_loop' ); ?>
+            <?php wc_get_template_part( 'content', 'product' ); ?>
+          <?php endwhile; ?>
+        <?php endif; ?>
 
-                    do_action( 'woocommerce_shop_loop' );
+      <?php woocommerce_product_loop_end(); ?>
 
-                    wc_get_template_part( 'content', 'product' );
-                }
-            }
+      <?php do_action( 'woocommerce_after_shop_loop' ); ?>
 
-            woocommerce_product_loop_end();
+    <?php else : ?>
 
-            do_action( 'woocommerce_after_shop_loop' );
-        } else {
-            do_action( 'woocommerce_no_products_found' );
-        }
+      <?php do_action( 'woocommerce_no_products_found' ); ?>
 
-        do_action( 'woocommerce_after_main_content' );
-        ?>
-    </div>
+    <?php endif; ?>
+  </div>
+
+  <?php do_action( 'woocommerce_after_main_content' ); ?>
 </div>
 
 <?php get_footer( 'shop' ); ?>

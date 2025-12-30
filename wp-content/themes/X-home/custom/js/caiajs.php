@@ -439,25 +439,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     
-    // jQuery(document).ready(function($) {
-    //   $(".adsdigi-pdp__thumbs").slick({
-    //     arrows: false,
-    //     dots: false,
-    //     speed: 600,
-    //     autoplay: true,
-    //     autoplaySpeed: 5000,
-    //     pauseOnHover: false,
-    //     pauseOnFocus: false,
-    //     slidesToShow: 3,
-    //     slidesToScroll: 1,
-    //     responsive: [{
-    //       breakpoint: 768,
-    //       settings: {
-    //         slidesToShow: 1,
-    //       },
-    //     }, ],
-    //   });
-    // });
+    jQuery(document).ready(function($) {
+      $(".adsdigi-catbar__grid").slick({
+        arrows: true,
+        dots: true,
+        speed: 600,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        pauseOnHover: false,
+        pauseOnFocus: false,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        responsive: [{
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+          },
+        }, ],
+      });
+    });
 
 
     jQuery(document).ready(function($) {
@@ -984,5 +984,31 @@ jQuery(function ($) {
 });
 
 </script>
+
+<script>
+  document.addEventListener('click', function (e) {
+  const minus = e.target.closest('.adsdigi-qty__btn--minus');
+  const plus  = e.target.closest('.adsdigi-qty__btn--plus');
+  if (!minus && !plus) return;
+
+  const qtyWrap = e.target.closest('.quantity');
+  const input = qtyWrap ? qtyWrap.querySelector('input.qty') : null;
+  if (!input) return;
+
+  const step = parseFloat(input.getAttribute('step') || '1');
+  const min  = parseFloat(input.getAttribute('min') || '1');
+  const maxAttr = input.getAttribute('max');
+  const max  = maxAttr !== null && maxAttr !== '' ? parseFloat(maxAttr) : Infinity;
+
+  let val = parseFloat(input.value || '0');
+
+  if (minus) val = Math.max(min, val - step);
+  if (plus)  val = Math.min(max, val + step);
+
+  input.value = val;
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+});
+
+  </script>
 <?php
 }

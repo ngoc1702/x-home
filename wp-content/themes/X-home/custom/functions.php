@@ -209,15 +209,15 @@ genesis_register_sidebar(
 
 genesis_register_sidebar( 
 	array(
-		'id'			=> 'content-tuvan',
-		'name'			=> 'Sản phẩm - Hỗ trợ tư vấn',
+		'id'			=> 'content-danhmucsp',
+		'name'			=> 'Sản phẩm - Danh mục sản phẩm',
 	)
 );
 
 genesis_register_sidebar( 
 	array(
-		'id'			=> 'content-muahang',
-		'name'			=> 'Sản phẩm - Hỗ trợ mua hàng',
+		'id'			=> 'content-camket',
+		'name'			=> 'Sản phẩm - Cam kết',
 	)
 );
 
@@ -771,3 +771,47 @@ add_action( 'widgets_init', 'register_shop_sidebar' );
 // Ẩn tiêu đề trang cửa hàng
 add_filter( 'woocommerce_show_page_title', '__return_false' );
 
+
+
+
+add_action('woocommerce_before_quantity_input_field', function () {
+  echo '<button type="button" class="adsdigi-qty__btn adsdigi-qty__btn--minus" aria-label="Giảm số lượng">-</button>';
+});
+
+add_action('woocommerce_after_quantity_input_field', function () {
+  echo '<button type="button" class="adsdigi-qty__btn adsdigi-qty__btn--plus" aria-label="Tăng số lượng">+</button>';
+});
+
+add_filter('loop_shop_columns', function ($cols) {
+	return 3;
+}, 20);
+
+
+add_filter( 'loop_shop_per_page', function( $cols ) {
+	return 5;
+}, 20 );
+
+add_filter( 'woocommerce_product_add_to_cart_text', function( $text, $product ) {
+	if ( ! $product instanceof WC_Product ) {
+		return $text;
+	}
+
+	// Simple / variable / grouped / external...
+	switch ( $product->get_type() ) {
+		case 'simple':
+			return 'Thêm giỏ hàng';
+		case 'variable':
+			return 'Chọn tuỳ chọn';
+		case 'grouped':
+			return 'Xem sản phẩm';
+		case 'external':
+			return 'Mua ngay';
+		default:
+			return 'Thêm giỏ hàng';
+	}
+}, 10, 2 );
+
+// Đổi text nút add to cart ở trang single product
+add_filter( 'woocommerce_product_single_add_to_cart_text', function( $text ) {
+	return 'Thêm giỏ hàng';
+} );
