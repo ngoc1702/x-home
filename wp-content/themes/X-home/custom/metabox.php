@@ -13,12 +13,12 @@ function prefix_register_taxonomy_meta_boxes($meta_boxes)
         'autosave'   => true,
         'fields'     => array(
 
-            array(
-                'name' => 'Ảnh sản phẩm',
-                'id'   => 'anhsp',
-                'type' => 'image_advanced',
-                'max_file_uploads' => 6,
-            ),
+            // array(
+            //     'name' => 'Ảnh sản phẩm',
+            //     'id'   => 'anhsp',
+            //     'type' => 'image_advanced',
+            //     'max_file_uploads' => 6,
+            // ),
         ),
     );
 

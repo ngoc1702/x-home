@@ -167,6 +167,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    //  jQuery(document).ready(function($) {
+    //   $(".single-product .yarpp-related .main-posts").slick({
+    //     arrows: false,
+    //     infinite: true,
+    //     dots: true,
+    //     speed: 600,
+    //     autoplay: true,
+    //     autoplaySpeed: 5000,
+    //     pauseOnHover: false,
+    //     pauseOnFocus: false,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 1,
+    //   });
+    // });
+
 
     jQuery(document).ready(function($) {
       $('.slide_sp .slider-for').slick({
@@ -1057,6 +1072,45 @@ document.addEventListener("DOMContentLoaded", function () {
     const content = openItem.querySelector(".textwidget");
     if (content) content.style.maxHeight = content.scrollHeight + "px";
   });
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const wrap = document.getElementById('danhgia');
+  if (!wrap) return;
+
+  const view = document.getElementById('reviewView');
+  const form = document.getElementById('reviewForm');
+  const btns = wrap.querySelectorAll('.btn-review-toggle');
+
+  function showMode(mode) {
+    if (mode === 'form') {
+      view.setAttribute('hidden', '');
+      form.removeAttribute('hidden');
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      form.setAttribute('hidden', '');
+      view.removeAttribute('hidden');
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      showMode(this.dataset.target);
+    });
+  });
+
+  // Nếu submit xong có message thành công -> tự quay về view sau 1.2s (tuỳ thích)
+  const observer = new MutationObserver(() => {
+    const success = wrap.querySelector('.glsr-form-message, .glsr-notice-success');
+    if (success && success.textContent.trim().length) {
+      setTimeout(() => showMode('view'), 1200);
+    }
+  });
+  observer.observe(wrap, { childList: true, subtree: true });
 });
 </script>
 

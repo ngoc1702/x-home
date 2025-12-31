@@ -819,7 +819,7 @@ add_filter( 'woocommerce_product_add_to_cart_text', function( $text, $product ) 
 		case 'simple':
 			return 'Thêm giỏ hàng';
 		case 'variable':
-			return 'Chọn tuỳ chọn';
+			return 'Tuỳ chọn';
 		case 'grouped':
 			return 'Xem sản phẩm';
 		case 'external':
@@ -833,3 +833,36 @@ add_filter( 'woocommerce_product_add_to_cart_text', function( $text, $product ) 
 add_filter( 'woocommerce_product_single_add_to_cart_text', function( $text ) {
 	return 'Thêm giỏ hàng';
 } );
+
+
+echo do_shortcode('[site_reviews_form assigned_to="post_id" hide="title,email,terms"]');
+add_filter('gettext', function($translated, $text, $domain){
+    if ($domain !== 'site-reviews') return $translated;
+
+    $map = [
+        'Submit Review' => 'Gửi đánh giá',
+        'Your overall rating' => 'Đánh giá của bạn',
+        'Select a Rating' => 'Chọn số sao',
+        'Title of your review' => 'Tiêu đề',
+        'Summarize your review or highlight an interesting detail' => 'Tóm tắt đánh giá',
+        'Your review' => 'Nội dung đánh giá',
+        'Tell people your review' => 'Để lại đánh giá của bạn',
+        'Your name' => 'Họ và tên',
+        'Tell us your name' => 'Họ và tên',
+        'Your email' => 'Email',
+        'Tell us your email' => 'Nhập email của bạn',
+        'This review is based on my own experience and is my genuine opinion.' => 'Đánh giá này là trải nghiệm thật của tôi.',
+        'There are no reviews yet. Be the first one to write one.' => 'Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá.',
+		'Excellent'  => 'Tuyệt vời',
+        'Very good'  => 'Rất tốt',
+        'Average'    => 'Trung bình',
+        'Poor'       => 'Kém',
+        'Terrible'   => 'Rất tệ',
+        'out of 5 stars (based on %s review)'  => 'trên 5 sao (dựa trên %s đánh giá)',
+        'out of 5 stars (based on %s reviews)' => 'trên 5 sao (dựa trên %s đánh giá)',
+		'0,0 out of 5 stars (based on 0 reviews)' => '0,0 trên tổng 5 sao (Dựa trên 0 đánh giá)',
+		'Submitting, please wait...' => 'Đang gửi yêu cầu'
+    ];
+
+    return $map[$text] ?? $translated;
+}, 20, 3);

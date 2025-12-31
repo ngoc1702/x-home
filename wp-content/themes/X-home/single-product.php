@@ -331,6 +331,51 @@ function add_thongtinmota() {
 	echo '  </div>';
 	echo '</section>';
 }
+add_action( 'genesis_loop', 'add_sitereviews' );
+
+function add_sitereviews() {
+    if ( ! is_single() ) return;
+
+    // IMPORTANT: đừng render section này trong admin-ajax.php của Site Reviews
+    if ( wp_doing_ajax() ) return;
+    if ( defined('REST_REQUEST') && REST_REQUEST ) return;
+
+    echo '<section id="danhgia" class="review-section">';
+
+        echo '<div class="review-head">';
+            echo '<h2 class="review-title">Khách hàng đánh giá</h2>';
+        echo '</div>';
+
+        echo '<div class="review-mode review-mode--view" id="reviewView">';
+            echo '<div class="review-top">';
+                echo '<div class="review-summary">';
+                    echo do_shortcode('[site_reviews_summary assigned_to="post_id"]');
+                echo '</div>';
+
+                echo '<div class="review-cta">';
+                    echo '<button type="button" class="btn-review-toggle" data-target="form">ĐÁNH GIÁ CỦA BẠN</button>';
+                echo '</div>';
+            echo '</div>';
+
+            echo '<div class="review-list-wrap">';
+                echo do_shortcode('[site_reviews assigned_to="post_id" count="7" pagination="ajax" hide="title"]');
+            echo '</div>';
+        echo '</div>';
+
+        echo '<div class="review-mode review-mode--form" id="reviewForm" hidden>';
+            echo '<div class="review-form-head">';
+                echo '<h3 class="review-form-title">Gửi đánh giá</h3>';
+                echo '<button type="button" class="btn-review-toggle btn-close" data-target="view">ĐÓNG LẠI</button>';
+            echo '</div>';
+
+            echo do_shortcode('[site_reviews_form assigned_to="post_id" hide="title,email,terms"]');
+
+        echo '</div>';
+
+    echo '</section>';
+}
+
+
 
 
 add_action('genesis_loop', 'add_thongtincamket');
@@ -343,5 +388,22 @@ function add_thongtincamket() {
 	}
 }
 
+
+// Thêm sản phẩm liên quan
+add_action('genesis_after_content_sidebar_wrap', 'caia_add_product_YARPP', 9);
+function caia_add_product_YARPP() {
+    static $done = false;
+    if ($done) return;
+    $done = true;
+
+    if (function_exists('yarpp_related')) {
+        yarpp_related([
+            'post_type'  => ['project'],
+            'threshold'  => 1,
+            'template'   => 'yarpp-template-product.php',
+            'limit'      => 3,
+        ]);
+    }
+}
 
 genesis();
