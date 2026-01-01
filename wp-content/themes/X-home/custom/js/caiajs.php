@@ -167,157 +167,147 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    //  jQuery(document).ready(function($) {
-    //   $(".single-product .yarpp-related .main-posts").slick({
-    //     arrows: false,
-    //     infinite: true,
-    //     dots: true,
-    //     speed: 600,
-    //     autoplay: true,
-    //     autoplaySpeed: 5000,
-    //     pauseOnHover: false,
-    //     pauseOnFocus: false,
-    //     slidesToShow: 3,
+
+
+    // jQuery(document).ready(function($) {
+    //   $('.slide_sp .slider-for').slick({
+    //     slidesToShow: 1,
     //     slidesToScroll: 1,
+    //     infinite: true,
+    //     arrows: false,
+    //     fade: true,
+    //     asNavFor: '.slide_sp .slider-nav'
     //   });
+
+    //   $('.slide_sp .slider-nav').slick({
+    //     slidesToShow: 4,
+    //     slidesToScroll: 1,
+    //     infinite: true,
+    //     asNavFor: '.slide_sp .slider-for',
+    //     dots: false,
+    //     arrows: false,
+    //     centerMode: false,
+    //     focusOnSelect: true,
+    //     responsive: [{
+    //       breakpoint: 768,
+    //       settings: {
+    //         slidesToShow: 3,
+    //         slidesToScroll: 1,
+    //       }
+    //     }]
+    //   });
+
     // });
 
+  jQuery(function($) {
+  var $banner = $(".content-banner");
+  if (!$banner.length) return;
 
-    jQuery(document).ready(function($) {
-      $('.slide_sp .slider-for').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        infinite: true,
-        arrows: false,
-        fade: true,
-        asNavFor: '.slide_sp .slider-nav'
-      });
+  var $main = $banner.children(".xhome-main-slider");
+  if (!$main.length) {
+    $main = $('<div class="xhome-main-slider"></div>');
+    $banner.prepend($main);
+  }
 
-      $('.slide_sp .slider-nav').slick({
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        infinite: true,
-        asNavFor: '.slide_sp .slider-for',
-        dots: false,
-        arrows: false,
-        centerMode: false,
-        focusOnSelect: true,
-        responsive: [{
-          breakpoint: 768,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 1,
-          }
-        }]
-      });
+  $banner.children("section.widget.widget_media_image").appendTo($main);
 
-    });
+  var $text = $banner.children("section.widget.widget_text").first();
+  if ($text.length) $text.addClass("xhome-text-overlay").appendTo($banner);
 
-    jQuery(function($) {
-      var $banner = $(".content-banner");
-      if (!$banner.length) return;
+  var $thumbWrap = $banner.children(".xhome-thumbs-wrap");
+  if (!$thumbWrap.length) {
+    $thumbWrap = $('<div class="xhome-thumbs-wrap"><div class="xhome-thumbs"></div></div>');
+    $banner.append($thumbWrap);
+  }
+  var $thumbs = $thumbWrap.find(".xhome-thumbs");
 
-      // ===== 1) Setup main wrapper =====
-      var $main = $banner.children(".xhome-main-slider");
-      if (!$main.length) {
-        $main = $('<div class="xhome-main-slider"></div>');
-        $banner.prepend($main);
-      }
+  if ($main.hasClass("slick-initialized")) $main.slick("unslick");
+  if ($thumbs.hasClass("slick-initialized")) $thumbs.slick("unslick");
 
-      // ===== 2) Move all media_image into main slider =====
-      $banner.children("section.widget.widget_media_image").appendTo($main);
+  function pickThumbSrc(img) {
+    var $img = $(img);
+    var srcset = $img.attr("srcset") || "";
+    if (srcset) {
+      var cand = srcset.split(",").map(function(s) { return s.trim(); });
+      var hit = cand.find(function(s) { return /600w/.test(s); });
+      if (hit) return hit.split(" ")[0];
+      return cand[0].split(" ")[0];
+    }
+    return $img.prop("currentSrc") || $img.attr("src") || "";
+  }
 
-      // ===== 3) Text widget overlay =====
-      var $text = $banner.children("section.widget.widget_text").first();
-      if ($text.length) $text.addClass("xhome-text-overlay").appendTo($banner);
+  $thumbs.empty();
+  $main.find("section.widget.widget_media_image img").each(function() {
+    var t = pickThumbSrc(this);
+    if (!t) return;
+    $thumbs.append('<div class="xhome-thumb"><img src="' + t + '" alt=""></div>');
+  });
 
-      // ===== 4) Create thumbs wrap inside banner =====
-      var $thumbWrap = $banner.children(".xhome-thumbs-wrap");
-      if (!$thumbWrap.length) {
-        $thumbWrap = $('<div class="xhome-thumbs-wrap"><div class="xhome-thumbs"></div></div>');
-        $banner.append($thumbWrap);
-      }
-      var $thumbs = $thumbWrap.find(".xhome-thumbs");
+  var count = $main.find("section.widget.widget_media_image").length;
+  if (count <= 1) return;
 
-      // ===== 5) Unslick clean =====
-      if ($main.hasClass("slick-initialized")) $main.slick("unslick");
-      if ($thumbs.hasClass("slick-initialized")) $thumbs.slick("unslick");
+  var showThumbs = Math.min(3, count);
 
-      // ===== helper: pick 600w from srcset if available =====
-      function pickThumbSrc(img) {
-        var $img = $(img);
-        var srcset = $img.attr("srcset") || "";
-        if (srcset) {
-          var cand = srcset.split(",").map(function(s) {
-            return s.trim();
-          });
-          var hit = cand.find(function(s) {
-            return /600w/.test(s);
-          });
-          if (hit) return hit.split(" ")[0];
-          return cand[0].split(" ")[0];
-        }
-        return $img.prop("currentSrc") || $img.attr("src") || "";
-      }
+  // ✅ helper set active thumb
+  function setActiveThumb(index) {
+    var $items = $thumbs.find(".xhome-thumb");
+    $items.removeClass("is-active");
+    $items.eq(index).addClass("is-active");
+  }
 
-      // ===== 6) Build thumbs items fresh =====
-      $thumbs.empty();
-      $main.find("section.widget.widget_media_image img").each(function() {
-        var t = pickThumbSrc(this);
-        if (!t) return;
-        $thumbs.append('<div class="xhome-thumb"><img src="' + t + '" alt=""></div>');
-      });
+  $thumbs.slick({
+    arrows: false,
+    dots: false,
+    infinite: false,
+    autoplay: false,
+    slidesToShow: showThumbs,
+    slidesToScroll: 1,
+    swipeToSlide: true
+  });
 
-      var count = $main.find("section.widget.widget_media_image").length;
-      if (count <= 1) return;
+  $main.slick({
+    arrows: false,
+    dots: false,
+    infinite: true,
+    speed: 900,
+    autoplay: true,
+    autoplaySpeed: 4500,
+    pauseOnHover: false,
+    pauseOnFocus: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    fade: true,
+    cssEase: "ease-in-out",
+    waitForAnimate: false
+  });
 
-      var showThumbs = Math.min(3, count);
+  // ✅ set active ngay từ đầu (sau khi slick init)
+  $main.on("init", function(e, slick) {
+    setActiveThumb(slick.currentSlide || 0);
+  });
 
-      // ===== 7) Init thumbs =====
-      $thumbs.slick({
-        arrows: false,
-        dots: false,
-        infinite: false,
-        autoplay: false,
-        slidesToShow: showThumbs,
-        slidesToScroll: 1,
-        swipeToSlide: true
-      });
+  // ⚠️ vì bạn init trước rồi mới bind event, gọi tay 1 phát:
+  setActiveThumb(0);
 
-      // ===== 8) Init main =====
-      $main.slick({
-        arrows: false,
-        dots: false,
-        infinite: true,
-        speed: 900,
-        autoplay: true,
-        autoplaySpeed: 4500,
-        pauseOnHover: false,
-        pauseOnFocus: false,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        fade: true,
-        cssEase: "ease-in-out",
-        waitForAnimate: false
-      });
+  // CLICK THUMB -> GO MAIN
+  $thumbs.off("click.xhome").on("click.xhome", ".slick-slide", function(e) {
+    e.preventDefault();
+    var idx = $(this).index();
+    if (idx < 0) return;
 
+    $main.slick("slickGoTo", idx, false);
+    $main.slick("slickPlay");
 
-      // ===== 9) CLICK THUMB -> GO MAIN (index theo vị trí thật) =====
-      $thumbs.off("click.xhome").on("click.xhome", ".slick-slide", function(e) {
-        e.preventDefault();
+    // ✅ set active ngay khi click
+    setActiveThumb(idx);
+  });
 
-        var idx = $(this).index();
-        if (idx < 0) return;
-        $main.slick("slickGoTo", idx, false);
-        $main.slick("slickPlay");
-      });
-
-
-      // (optional) main chạy -> kéo thumbs chạy theo cho đẹp
-      $main.on("afterChange", function(e, slick, current) {
-        $thumbs.slick("slickGoTo", current);
-      });
-    });
+  // main chạy -> kéo thumbs + cập nhật active
+  $main.on("afterChange", function(e, slick, current) {
+    $thumbs.slick("slickGoTo", current);
+    setActiveThumb(current);
+  });
+});
 
 
     jQuery(function($) {

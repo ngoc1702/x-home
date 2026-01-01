@@ -2213,7 +2213,7 @@ input#submit {
   object-fit: cover;
   display: block;
   box-sizing: border-box;
-  border: 3px solid transparent;
+  /* border: 3px solid transparent; */
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   transform: translateZ(0);
   transition: border-color 0.25s ease, box-shadow 0.25s ease,
@@ -2221,10 +2221,8 @@ input#submit {
 }
 
 /* ✅ THUMB ĐANG ACTIVE */
-.xhome-thumbs .slick-current .xhome-thumb img {
-  border-color: rgba(213, 176, 107, 0.95) !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  transform: scale(1.03);
+.xhome-thumbs .xhome-thumb.is-active img {
+  border: 2px solid #c5a47e !important;
 }
 
 .content-vechungtoi,
