@@ -274,7 +274,7 @@ function add_thongtin_sp()
 	// Nút custom
 	echo '<div class="btn_group">';
 	echo '<div class="adsdigi-pdp__ctaRow">';
-	echo '<a class="adsdigi-btn adsdigi-btn--secondary" >TƯ VẤN BÁO GIÁ</a>';
+	echo '<a class="adsdigi-btn adsdigi-btn--secondary" href="tel:">TƯ VẤN BÁO GIÁ</a>';
 	echo '</div>';
 
 	echo '<div class="adsdigi-pdp__ctaRow adsdigi-pdp__ctaRow--full">';
@@ -331,14 +331,21 @@ function add_thongtinmota() {
 	echo '  </div>';
 	echo '</section>';
 }
-add_action( 'genesis_loop', 'add_sitereviews' );
+
+
+
+
+add_action('genesis_loop', 'add_sitereviews');
 
 function add_sitereviews() {
-    if ( ! is_single() ) return;
+    if (!is_singular()) return; // dùng singular cho chắc (post/page/product…)
 
-    // IMPORTANT: đừng render section này trong admin-ajax.php của Site Reviews
-    if ( wp_doing_ajax() ) return;
-    if ( defined('REST_REQUEST') && REST_REQUEST ) return;
+    // Không render trong request AJAX/REST
+    if (wp_doing_ajax()) return;
+    if (defined('REST_REQUEST') && REST_REQUEST) return;
+
+    $post_id = get_queried_object_id();
+    if (!$post_id) return;
 
     echo '<section id="danhgia" class="review-section">';
 
@@ -346,10 +353,12 @@ function add_sitereviews() {
             echo '<h2 class="review-title">Khách hàng đánh giá</h2>';
         echo '</div>';
 
-        echo '<div class="review-mode review-mode--view" id="reviewView">';
+        // VIEW
+        echo '<div class="review-mode review-mode--view is-active" id="reviewView">';
             echo '<div class="review-top">';
                 echo '<div class="review-summary">';
-                    echo do_shortcode('[site_reviews_summary assigned_to="post_id"]');
+                    // ÉP gán đúng bài
+                    echo do_shortcode('[site_reviews_summary assigned_posts="'.$post_id.'"]');
                 echo '</div>';
 
                 echo '<div class="review-cta">';
@@ -358,18 +367,18 @@ function add_sitereviews() {
             echo '</div>';
 
             echo '<div class="review-list-wrap">';
-                echo do_shortcode('[site_reviews assigned_to="post_id" count="7" pagination="ajax" hide="title"]');
+                echo do_shortcode('[site_reviews assigned_posts="'.$post_id.'" count="5" pagination="ajax"]');
             echo '</div>';
         echo '</div>';
 
-        echo '<div class="review-mode review-mode--form" id="reviewForm" hidden>';
+        // FORM
+        echo '<div class="review-mode review-mode--form" id="reviewForm">';
             echo '<div class="review-form-head">';
                 echo '<h3 class="review-form-title">Gửi đánh giá</h3>';
                 echo '<button type="button" class="btn-review-toggle btn-close" data-target="view">ĐÓNG LẠI</button>';
             echo '</div>';
 
-            echo do_shortcode('[site_reviews_form assigned_to="post_id" hide="title,email,terms"]');
-
+            echo do_shortcode('[site_reviews_form assigned_posts="'.$post_id.'" hide="title,email,terms"]');
         echo '</div>';
 
     echo '</section>';

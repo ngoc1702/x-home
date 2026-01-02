@@ -7,43 +7,24 @@ function caia_add_file_jquery()
 ?>
 
   <script>
-    jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 
-      $('.site-header section:nth-child(3) .widget_text p').click(function() {
+    $('.adsdigi-btn--outline').on('click', function (e) {
+        e.preventDefault();
         $('.nhantuvan').fadeIn();
-      });
-
-      $('.nhantuvan .widget_caldera_forms_widget .widgettitle').click(function() {
-        $('.nhantuvan').fadeOut();
-
-      });
-    })
-
-
-
-    jQuery(document).ready(function($) {
-      $('.btn_baogia').click(function() {
-        $('.nhantuvan').fadeIn();
-        $('.nhantuvan .widget_caldera_forms_widget').fadeIn();
-      });
-
-      $('.nhantuvan .close-popup').click(function() {
-        $('.nhantuvan').fadeOut();
-      });
+        $('.nhantuvan .widget_caldera_forms_widget')
+            .fadeIn()
+            .addClass('open');
     });
 
-    jQuery(document).ready(function($) {
-
-      $('.content-info .textwidget p:nth-child(5) ').click(function() {
-        $('.nhantuvan').fadeIn();
-        $('.nhantuvan .widget_caldera_forms_widget').fadeIn();
-      });
-
-      $('.nhantuvan .widget_caldera_forms_widget .widgettitle').click(function() {
+    $('.nhantuvan .close-popup, .nhantuvan .widgettitle').on('click', function () {
         $('.nhantuvan').fadeOut();
+        $('.nhantuvan .widget_caldera_forms_widget')
+            .fadeOut()
+            .removeClass('open');
+    });
+    });
 
-      });
-    })
   </script>
 
   <script>
@@ -545,15 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    jQuery(document).ready(function($) {
-
-      $('.site-header p').click(function() {
-        $('.nhantuvan .widget_caldera_forms_widget').show();
-      });
-
-      $('.nhantuvan .widget_caldera_forms_widget .widgettitle').click(function() {
-        $('.nhantuvan .widget_caldera_forms_widget').hide();
-      });
+   
 
 
       var youtube = document.querySelectorAll(".youtube");
@@ -1065,6 +1038,69 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const wrap = document.getElementById('danhgia');
+  if (!wrap) return;
+
+  const view = document.getElementById('reviewView');
+  const form = document.getElementById('reviewForm');
+  if (!view || !form) return;
+
+  const btns = wrap.querySelectorAll('.btn-review-toggle');
+
+  function showMode(mode) {
+    if (mode === 'form') {
+      view.classList.remove('is-active');
+      form.classList.add('is-active');
+
+      // giúp star rating init tốt hơn sau khi form hiện
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('resize'));
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    } else {
+      form.classList.remove('is-active');
+      view.classList.add('is-active');
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Toggle buttons
+  btns.forEach(btn => {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      showMode(this.dataset.target);
+    });
+  });
+
+  // Nếu submit thành công -> chuyển về view
+  const observer = new MutationObserver(() => {
+    const success = wrap.querySelector('.glsr-notice-success');
+    if (success && success.textContent.trim().length) {
+      setTimeout(() => showMode('view'), 1200);
+    }
+  });
+  observer.observe(wrap, { childList: true, subtree: true });
+
+  // Chữa kẹt loading (nếu có xung đột JS): sau 10s thì mở lại nút submit
+  wrap.addEventListener('submit', function(e){
+    const f = e.target;
+    if (!f || !f.classList.contains('glsr-form')) return;
+
+    setTimeout(() => {
+      const submitBtn = f.querySelector('button[type="submit"], input[type="submit"]');
+      if (!submitBtn) return;
+
+      // nếu vẫn disabled thì reset
+      if (submitBtn.disabled) {
+        submitBtn.disabled = false;
+      }
+    }, 10000);
+  }, true);
+});
+</script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -1073,37 +1109,88 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const view = document.getElementById('reviewView');
   const form = document.getElementById('reviewForm');
+  if (!view || !form) return;
+
   const btns = wrap.querySelectorAll('.btn-review-toggle');
+  const summaryEl = wrap.querySelector('.review-summary');
+  const listEl = wrap.querySelector('.review-list-wrap');
 
   function showMode(mode) {
     if (mode === 'form') {
-      view.setAttribute('hidden', '');
-      form.removeAttribute('hidden');
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      view.classList.remove('is-active');
+      form.classList.add('is-active');
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('resize'));
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     } else {
-      form.setAttribute('hidden', '');
-      view.removeAttribute('hidden');
+      form.classList.remove('is-active');
+      view.classList.add('is-active');
       wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
   btns.forEach(btn => {
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
       showMode(this.dataset.target);
     });
   });
 
-  // Nếu submit xong có message thành công -> tự quay về view sau 1.2s (tuỳ thích)
+  // ---- Refresh block summary + list bằng cách fetch lại trang ----
+  let refreshing = false;
+  async function refreshReviews() {
+    if (refreshing) return;
+    if (!summaryEl || !listEl) return;
+
+    refreshing = true;
+    try {
+      const res = await fetch(window.location.href, {
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      const newSummary = doc.querySelector('#danhgia .review-summary');
+      const newList = doc.querySelector('#danhgia .review-list-wrap');
+
+      if (newSummary) summaryEl.innerHTML = newSummary.innerHTML;
+      if (newList) listEl.innerHTML = newList.innerHTML;
+    } catch (e) {
+      // ignore
+    } finally {
+      refreshing = false;
+    }
+  }
+
+  // 1) Refresh 1 lần khi bạn quay lại tab (vừa approve xong)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      refreshReviews();
+    }
+  });
+
+  // 2) Polling mỗi 10 giây khi đang ở VIEW mode
+  setInterval(() => {
+    if (view.classList.contains('is-active')) {
+      refreshReviews();
+    }
+  }, 10000);
+
+  // 3) Sau khi submit thành công -> tự chuyển về view và refresh
   const observer = new MutationObserver(() => {
-    const success = wrap.querySelector('.glsr-form-message, .glsr-notice-success');
+    const success = wrap.querySelector('.glsr-notice-success');
     if (success && success.textContent.trim().length) {
-      setTimeout(() => showMode('view'), 1200);
+      setTimeout(() => {
+        showMode('view');
+        refreshReviews();
+      }, 1200);
     }
   });
   observer.observe(wrap, { childList: true, subtree: true });
 });
 </script>
-
 
 <?php
 }

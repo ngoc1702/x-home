@@ -835,7 +835,7 @@ add_filter( 'woocommerce_product_single_add_to_cart_text', function( $text ) {
 } );
 
 
-echo do_shortcode('[site_reviews_form assigned_to="post_id" hide="title,email,terms"]');
+// echo do_shortcode('[site_reviews_form assigned_to="post_id" hide="title,email,terms"]');
 add_filter('gettext', function($translated, $text, $domain){
     if ($domain !== 'site-reviews') return $translated;
 
@@ -861,8 +861,23 @@ add_filter('gettext', function($translated, $text, $domain){
         'out of 5 stars (based on %s review)'  => 'trên 5 sao (dựa trên %s đánh giá)',
         'out of 5 stars (based on %s reviews)' => 'trên 5 sao (dựa trên %s đánh giá)',
 		'0,0 out of 5 stars (based on 0 reviews)' => '0,0 trên tổng 5 sao (Dựa trên 0 đánh giá)',
-		'Submitting, please wait...' => 'Đang gửi yêu cầu'
+		'Submitting, please wait...' => 'Đang gửi yêu cầu',
+		'This field is required.' => 'Đây là các trường bắt buộc',
+		'Please fix the form errors.' => 'Vui lòng sửa các lỗi trong biểu mẫu.',
+		'Your review has been submitted and is pending approval.' => 'Bài đánh giá của bạn đã được gửi và đang chờ phê duyệt.',
+		'The form could not be submitted. Please notify the site administrator.' => 'Biểu mẫu không thể được gửi. Vui lòng thông báo cho quản trị viên trang web.'
     ];
 
-    return $map[$text] ?? $translated;
+    return $map[$translated] ?? $translated;
+
 }, 20, 3);
+
+
+add_action( 'woocommerce_before_calculate_totals', 'set_price_zero_when_in_cart', 10, 1 );
+function set_price_zero_when_in_cart( $cart ) {
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) return;
+
+    foreach ( $cart->get_cart() as $cart_item ) {
+        $cart_item['data']->set_price( 0 );
+    }
+}
