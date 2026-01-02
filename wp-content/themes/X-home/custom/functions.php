@@ -881,3 +881,84 @@ function set_price_zero_when_in_cart( $cart ) {
         $cart_item['data']->set_price( 0 );
     }
 }
+
+
+add_filter('woocommerce_loop_add_to_cart_link', function ($html, $product, $args) {
+
+    if ( ! $product instanceof WC_Product ) return $html;
+
+    // Simple giữ nguyên
+    if ( $product->is_type('simple') ) return $html;
+
+    // Chỉ xử lý variable
+    if ( ! $product->is_type('variable') ) return $html;
+
+    /** @var WC_Product_Variable $variable */
+    $variable = wc_get_product( $product->get_id() );
+    if ( ! $variable instanceof WC_Product_Variable ) return $html;
+
+    $default_attrs = $variable->get_default_attributes();
+    $variation_id  = 0;
+
+    // Match variation mặc định (khuyên: set Default form values trong admin)
+    if ( ! empty($default_attrs) ) {
+        $data_store   = WC_Data_Store::load('product');
+        $variation_id = $data_store->find_matching_product_variation($variable, $default_attrs);
+    }
+
+    // Fallback: lấy variation đầu tiên
+    if ( ! $variation_id ) {
+        $variation_ids = $variable->get_children();
+        if ( ! empty($variation_ids) ) {
+            $variation_id = (int) $variation_ids[0];
+            $v = wc_get_product($variation_id);
+            if ( $v ) $default_attrs = $v->get_attributes();
+        }
+    }
+
+    // Không tìm được variation → trả về “Tùy chọn” như cũ
+    if ( ! $variation_id ) return $html;
+
+    // Build URL add-to-cart như simple nhưng có variation_id + attributes
+    $query = [
+        'add-to-cart'  => $product->get_id(),
+        'variation_id' => $variation_id,
+    ];
+
+    foreach ( $default_attrs as $k => $v ) {
+        if ( $v === '' || $v === null ) continue;
+        $key = (strpos($k, 'attribute_') === 0) ? $k : 'attribute_' . $k;
+        $query[$key] = $v;
+    }
+
+    // Dùng shop url để ra dạng /san-pham?add-to-cart=...
+    $url = add_query_arg($query, wc_get_page_permalink('shop'));
+
+    // Render lại nút
+    return sprintf(
+        '<a href="%s" class="button add_to_cart_button ajax_add_to_cart" data-quantity="1" data-product_id="%d" rel="nofollow">Thêm giỏ hàng</a>',
+        esc_url($url),
+        esc_attr($product->get_id())
+    );
+
+}, 10, 3);
+
+add_action('wp_head', function () {
+    echo '<style>
+    .product-card__actions{position:relative;z-index:10;}
+    .product-card__actions a{position:relative;z-index:11;}
+    </style>';
+});
+
+add_action('wp_footer', function () {
+    ?>
+    <script>
+      document.addEventListener('click', function(e){
+        const btn = e.target.closest('.product-card__actions a.add_to_cart_button, .product-card__actions a.ajax_add_to_cart');
+        if(!btn) return;
+
+        e.stopPropagation();
+      }, true);
+    </script>
+    <?php
+});

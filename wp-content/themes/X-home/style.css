@@ -5648,239 +5648,139 @@ line-height: normal;
 
 
 /* Trang giỏ hàng */
-:root{
-  --cart-bg: #0f1115;
-  --cart-card: rgba(255,255,255,.06);
-  --cart-card-2: rgba(255,255,255,.08);
-  --cart-border: rgba(255,255,255,.10);
-  --cart-text: rgba(255,255,255,.90);
-  --cart-muted: rgba(255,255,255,.65);
-  --cart-accent: #7c5cff;     /* màu nhấn */
-  --cart-accent-2: #22c55e;   /* màu “tiết kiệm” */
-  --cart-radius: 16px;
-  --cart-shadow: 0 12px 30px rgba(0,0,0,.35);
+.woocommerce-cart  .site-inner{
+    padding: 130px 0 40px;
 }
 
-/* Nền + typography tổng thể */
-body .wp-block-woocommerce-cart{
-  color: var(--cart-text);
-}
-body .wp-block-woocommerce-cart a{
-  color: inherit;
-  text-decoration: none;
-}
-body .wp-block-woocommerce-cart a:hover{
-  opacity: .9;
+.woocommerce-cart table.wc-block-cart-items{
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  border: 1px solid rgba(255,255,255,.18) !important; 
+  border-radius: 10px !important;
+  overflow: hidden !important;
 }
 
-/* Khung layout */
-.wp-block-woocommerce-cart.alignwide{
-  max-width: 1180px;
-  margin: 40px auto;
-  padding: 0 16px;
+/* Header */
+.woocommerce-cart table.wc-block-cart-items thead th{
+  background: rgba(255,255,255,.06) !important;
+  padding: 14px 12px !important;
+  text-align: center !important;
+  font-size: 16px;
 }
 
-/* Layout 2 cột */
-.wc-block-components-sidebar-layout.wc-block-cart{
-  gap: 24px;
+
+.woocommerce-cart table.wc-block-cart-items tbody td{
+  padding: 16px 16px !important;
+  border-bottom: 1px solid rgba(255,255,255,.18) !important;
 }
 
-/* Main + Sidebar dạng card */
-.wc-block-cart__main,
-.wc-block-cart__sidebar{
-  background: var(--cart-card);
-  border: 1px solid var(--cart-border);
-  border-radius: var(--cart-radius);
-  box-shadow: var(--cart-shadow);
+.woocommerce-cart table.wc-block-cart-items tbody td:last-child,
+.woocommerce-cart table.wc-block-cart-items tbody th:last-child{
+  border-bottom: none !important;
 }
-
-/* Padding trong 2 cột */
-.wc-block-cart__main{ padding: 18px; }
-.wc-block-cart__sidebar{ padding: 18px; }
-
-/* Tiêu đề (Tổng cộng giỏ hàng) */
-.wc-block-cart__totals-title{
-  font-size: 18px;
-  font-weight: 700;
-  margin: 6px 0 14px;
-  letter-spacing: .2px;
-}
-
-/* Bảng sản phẩm: bỏ vibe “table”, chuyển sang list card */
-.wc-block-cart-items{
-  border-collapse: separate;
-  border-spacing: 0 14px; /* tạo khoảng giữa các item */
-}
-.wc-block-cart-items__header{
-  opacity: .85;
-}
-.wc-block-cart-items__header th{
-  font-weight: 600;
-  color: var(--cart-muted);
-  padding: 10px 8px;
-}
-
-/* Từng dòng sản phẩm => card */
 .wc-block-cart-items__row{
-  background: var(--cart-card-2);
-  border: 1px solid var(--cart-border);
-  border-radius: var(--cart-radius);
-  overflow: hidden;
-}
-.wc-block-cart-items__row td{
-  vertical-align: top;
-  padding: 14px 12px;
+  background:rgba(255,255,255,.06) !important;
 }
 
-/* Ảnh sản phẩm */
-.wc-block-cart-item__image img{
-  width: 120px !important;
-  height: auto !important;
-  border-radius: 14px;
-  border: 1px solid var(--cart-border);
-  display: block;
+.woocommerce-cart table.wc-block-cart-items thead th:not(:last-child),
+.woocommerce-cart table.wc-block-cart-items tbody td:not(:last-child){
+  border-right: 1px solid rgba(255,255,255,.14) !important;
+    border-bottom: 1px solid rgba(255,255,255,.18) !important;
 }
 
-/* Tên sản phẩm */
+
+
+ table.wc-block-cart-items .wc-block-cart-items__header .wc-block-cart-items__header-image {
+    width: 200px !important;
+}
+.woocommerce-cart table.wc-block-cart-items .wc-block-cart-item__image img{
+  border-radius: 8px !important;
+}
+
+
+.wc-block-cart-items__header-product span{
+  color: #FFF;
+}
+
+.editor-styles-wrapper table.wc-block-cart-items .wc-block-cart-items__header .wc-block-cart-items__header-product, table.wc-block-cart-items .wc-block-cart-items__header .wc-block-cart-items__header-product {
+    visibility: visible !important;
+}
+
+.wc-block-components-product-metadata{
+  font-size: 15px !important;
+}
+
+
 .wc-block-components-product-name{
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 6px;
-  display: inline-block;
-}
-
-/* Giá (nếu có) */
-.wc-block-components-product-price__value{
-  color: var(--cart-text);
+  color: #c5a47e;
   font-weight: 600;
+  font-size: 16px !important;
 }
 
-/* Badge “Tiết kiệm” */
+.wc-block-cart__totals-title {
+  font-size: 16px !important;
+}
+
 .wc-block-components-sale-badge{
-  margin-top: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  background: rgba(34,197,94,.12);
-  border: 1px solid rgba(34,197,94,.25);
-  color: #d7ffe6;
-  font-weight: 600;
-}
-.wc-block-components-sale-badge .wc-block-formatted-money-amount{
-  color: var(--cart-accent-2);
-  font-weight: 800;
+  display: none !important;
 }
 
-/* Quantity selector */
-.wc-block-components-quantity-selector{
-  margin-top: 12px;
-  display: inline-flex;
-  align-items: center;
-  background: rgba(255,255,255,.06);
-  border: 1px solid var(--cart-border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.wc-block-components-quantity-selector__input{
-  width: 56px !important;
-  text-align: center;
-  background: transparent !important;
-  color: var(--cart-text) !important;
-  border: none !important;
-  outline: none !important;
-  padding: 10px 6px !important;
-}
-.wc-block-components-quantity-selector__button{
-  width: 44px;
-  height: 44px;
-  border: none !important;
-  background: transparent !important;
-  color: var(--cart-text) !important;
-  cursor: pointer;
-  transition: background .15s ease, transform .05s ease;
-}
-.wc-block-components-quantity-selector__button:hover{
-  background: rgba(255,255,255,.08) !important;
-}
-.wc-block-components-quantity-selector__button:active{
-  transform: translateY(1px);
-}
-.wc-block-components-quantity-selector__button[disabled]{
-  opacity: .35;
-  cursor: not-allowed;
-}
 
-/* Link xóa sản phẩm */
-.wc-block-cart-item__remove-link{
-  margin-top: 10px;
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  color: rgba(255,255,255,.75);
-  font-weight: 600;
-  padding: 8px 10px;
+.wp-block-woocommerce-cart-totals-block{
+  background: rgba(255,255,255,.06) !important;
+  padding: 14px 24px !important;
+      border: 1px solid rgba(255, 255, 255, .18) !important;
   border-radius: 10px;
-  background: rgba(239,68,68,.10);
-  border: 1px solid rgba(239,68,68,.18);
-  transition: transform .08s ease, opacity .15s ease;
-}
-.wc-block-cart-item__remove-link:hover{
-  opacity: .95;
-}
-.wc-block-cart-item__remove-link:active{
-  transform: translateY(1px);
 }
 
-/* Cột "Tổng" căn phải + nổi */
-.wc-block-cart-item__total{
-  text-align: right;
-}
-.wc-block-cart-item__total .wc-block-components-product-price__value{
-  font-size: 16px;
-  font-weight: 800;
+.wc-block-components-totals-wrapper {
+    border-top: 1px solid rgba(255, 255, 255, .18) !important;
+    padding: 12px 0;
 }
 
-/* Sidebar: shipping + tổng */
-.wc-block-components-totals-wrapper{
-  padding: 12px 0;
-  border-top: 1px solid var(--cart-border);
-}
-.wc-block-components-totals-wrapper:first-of-type{
-  border-top: none;
-  padding-top: 0;
-}
-.wc-block-components-totals-item__label{
-  color: var(--cart-muted);
-  font-weight: 600;
-}
-.wc-block-components-totals-item__value{
-  font-weight: 800;
-}
-.wc-block-components-totals-shipping strong{
-  color: var(--cart-accent-2);
-}
-
-/* Nút checkout */
-.wc-block-cart__submit-container{
-  margin-top: 16px;
-}
 .wc-block-cart__submit-button{
-  width: 100%;
-  border-radius: 14px !important;
-  border: 1px solid rgba(124,92,255,.35) !important;
-  background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.65)) !important;
-  box-shadow: 0 10px 24px rgba(124,92,255,.28);
-  padding: 14px 16px !important;
-  font-weight: 800 !important;
-  letter-spacing: .2px;
-  transition: transform .08s ease, filter .15s ease;
+      display: flex !important;
+    height: 44px;
+    padding: 11px 32px !important;
+    justify-content: center !important;
+    align-items: center;
+    border-radius: 10px !important;
+    border: 1px solid var(--main, #C5A47E) !important;
+    background-color: #C5A47E !important;
+    color: #272727 !important;
+    text-transform: uppercase !important;
+    font-family: Montserrat !important;
+    font-weight: 700 !important;
+    cursor: pointer;
 }
-.wc-block-cart__submit-button:hover{
-  filter: brightness(1.05);
+
+.wc-block-cart table.wc-block-cart-items, .wc-block-cart table.wc-block-cart-items td, .wc-block-cart table.wc-block-cart-items th {
+    margin: 0 0 0px !important;
 }
-.wc-block-cart__submit-button:active{
-  transform: translateY(1px);
+
+body:not(.woocommerce-block-theme-has-button-styles) .wc-block-components-button:not(.is-link):focus {
+    box-shadow: none !important;
+    box-shadow: none !important;
+    outline: 1px solid transparent !important;
+}
+
+.wp-block-woocommerce-checkout-actions-block .wc-block-checkout__actions_row .wc-block-components-checkout-place-order-button{
+   display: flex !important;
+    height: 44px;
+    padding: 11px 32px !important;
+    justify-content: center !important;
+    align-items: center;
+    border-radius: 10px !important;
+    border: 1px solid var(--main, #C5A47E) !important;
+    background-color: #C5A47E !important;
+    color: #272727 !important;
+    text-transform: uppercase !important;
+    font-family: Montserrat !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+}
+
+.wc-block-components-checkbox__label{
+  color: #FFF;
 }
