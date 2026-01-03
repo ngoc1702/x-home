@@ -9,21 +9,31 @@ function caia_add_file_jquery()
   <script>
 jQuery(document).ready(function ($) {
 
-    $('.adsdigi-btn--outline').on('click', function (e) {
-        e.preventDefault();
-        $('.nhantuvan').fadeIn();
-        $('.nhantuvan .widget_caldera_forms_widget')
-            .fadeIn()
-            .addClass('open');
-    });
+  $('.adsdigi-btn--outline').on('click', function (e) {
+    e.preventDefault();
+    $('.nhantuvan').fadeIn();
+    $('.nhantuvan .widget_caldera_forms_widget').fadeIn().addClass('open');
+  });
 
-    $('.nhantuvan .close-popup, .nhantuvan .widgettitle').on('click', function () {
-        $('.nhantuvan').fadeOut();
-        $('.nhantuvan .widget_caldera_forms_widget')
-            .fadeOut()
-            .removeClass('open');
-    });
-    });
+
+jQuery(function ($) {
+  $(document).on('click', '.xhome-text-overlay .textwidget strong', function (e) {
+    e.preventDefault();
+    $('.nhantuvan').fadeIn();
+    $('.nhantuvan .widget_caldera_forms_widget').fadeIn().addClass('open');
+  });
+});
+
+
+
+  $('.nhantuvan .close-popup, .nhantuvan .widgettitle').on('click', function () {
+    $('.nhantuvan').fadeOut();
+    $('.nhantuvan .widget_caldera_forms_widget').fadeOut().removeClass('open');
+  });
+
+});
+
+
 
   </script>
 
@@ -474,6 +484,8 @@ document.addEventListener("DOMContentLoaded", () => {
           slidesToScroll: 1
         });
 
+        
+
         initSlickForMobile('.camket-box', {
           arrows: false,
           infinite: false,
@@ -487,6 +499,31 @@ document.addEventListener("DOMContentLoaded", () => {
           slidesToScroll: 2
         });
       }
+
+      
+  // --- Slider cho 3 section Dịch vụ (Thiết kế / Thi công / Nội thất rời) ---
+  const $wrap = $('.content-dichvu.section > .wrap');
+  const $serviceSections = $wrap.find('section[id^="images_upload_widget-"]');
+
+  // nếu không đúng cấu trúc hoặc thiếu section thì bỏ qua
+  if ($wrap.length && $serviceSections.length >= 2) {
+
+    // wrap 3 section vào 1 container để slick chạy
+    if (!$wrap.find('.dichvu-slider').length) {
+      $serviceSections.wrapAll('<div class="dichvu-slider"></div>');
+    }
+
+    initSlickForMobile('.dichvu-slider', {
+      arrows: false,
+      infinite: true,
+      dots: true,
+      speed: 500,
+      autoplay: false,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      adaptiveHeight: true
+    });
+  }
 
       // Gọi khi tải trang
       handleSlickInit();
@@ -666,102 +703,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // đại diện vn
 
-      if ($(window).width() > 960) {
-
-        // const slider = document.querySelector('.content-doitac ul');
-        // slider.innerHTML += slider.innerHTML; // Clone toàn bộ li
-
-        // $(".content-doitac ul").slick({
-        //   arrows: false,
-        // infinite: true,
-        // dots: false,
-        // speed: 15000,             // chậm dần nhưng liên tục
-        // cssEase: 'linear',
-        // autoplay: true,
-        // autoplaySpeed: 0,
-        // pauseOnHover: false,
-        // pauseOnFocus: false,
-        // slidesToShow: 6,
-        // slidesToScroll: 1,
-        // variableWidth: true,
-        // });
+</script>
 
 
-      } else {
-
-
-
-        $("").slick({
-          arrows: false,
-          infinite: true,
-          dots: true,
-          speed: 600,
-          autoplay: true,
-          autoplaySpeed: 5000,
-          pauseOnHover: false,
-          pauseOnFocus: false,
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          adaptiveHeight: false,
-          variableWidth: false,
-          dotsClass: 'custom_paging',
-          customPaging: function(slider, i) {
-            return '<span class="line"></span>';
-          },
-        });
-
-
-      }
-
-
-      $("").slick({
-        arrows: true,
-        infinite: true,
-        dots: false,
-        speed: 600,
-        autoplay: false,
-        autoplaySpeed: 5000,
-        pauseOnHover: false,
-        pauseOnFocus: false,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        responsive: [{
-            breakpoint: 961,
-            settings: {
-              slidesToShow: 4,
-            }
-          },
-          {
-            breakpoint: 769,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2,
-              arrows: false,
-              dots: true,
-              dotsClass: 'custom_paging',
-              customPaging: function(slider, i) {
-                return '<span class="line"></span>';
-              },
-            }
-          }
-        ]
-      });
-
-
-      $('a[href*=\\#]:not([href=\\#])').click(function() {
-        if (location.pathname.replace('/^\//', '') == this.pathname.replace('/^\//', '') && location.hostname == this.hostname) {
-          var target = $(this.hash);
-          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-          if (target.length) {
-            $('html,body').animate({
-              scrollTop: target.offset().top - 50
-            }, 500);
-            return false;
-          }
-        }
-      });
-    });
-  </script>
   <script>
     jQuery(document).ready(function($) {
       $(".content .comment-form #submit").click(function() {

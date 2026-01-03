@@ -4,8 +4,7 @@
  */
 
 add_filter( 'genesis_site_layout', '__genesis_return_full_width_content' );
-
-get_header();
+remove_action( 'genesis_loop', 'genesis_do_loop' );
 
 // Xóa post-info và post-meta
 remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
@@ -24,7 +23,9 @@ function be_more_link( $more_link ) {
 }
 
 // Gỡ loop mặc định
-remove_action( 'genesis_loop', 'genesis_do_loop' );
+remove_all_actions( 'genesis_loop' );
+
+// Gắn duy nhất loop custom của bạn
 add_action( 'genesis_loop', 'catergory_project_custom' );
 function catergory_project_custom() {
 
@@ -132,8 +133,3 @@ function catergory_project_custom() {
 
 
 
-if ( function_exists( 'genesis' ) ) {
-	genesis();
-} else {
-	get_footer();
-}

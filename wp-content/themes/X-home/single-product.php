@@ -274,7 +274,7 @@ function add_thongtin_sp()
 	// Nút custom
 	echo '<div class="btn_group">';
 	echo '<div class="adsdigi-pdp__ctaRow">';
-	echo '<a class="adsdigi-btn adsdigi-btn--secondary" href="tel:">TƯ VẤN BÁO GIÁ</a>';
+	echo '<a class="adsdigi-btn adsdigi-btn--secondary" href="tel:02366533838">TƯ VẤN BÁO GIÁ</a>';
 	echo '</div>';
 
 	echo '<div class="adsdigi-pdp__ctaRow adsdigi-pdp__ctaRow--full">';
