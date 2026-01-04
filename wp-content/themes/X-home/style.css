@@ -1863,7 +1863,7 @@ input#submit {
     height: 2px;
     background: #fff;
     display: block;
-    margin: 12px 0 0;
+    margin: 12px auto 0;
 }
 
 .contact-section ul {
@@ -3080,7 +3080,7 @@ input#submit {
   justify-self: center;
 }
 
-/* --- Bố cục tổng thể cho post --- */
+
 .content-news .post {
   display: flex;
   flex-direction: column;
@@ -3138,7 +3138,7 @@ input#submit {
 .content-news li {
   display: flex;
   gap: 16px;
-  border-bottom: 0.3px solid #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   padding: 36px 0;
 }
 
@@ -6207,7 +6207,7 @@ textarea {
 }
 
 .title-area {
-    margin-left: -76px;
+    margin-left: -60px;
      margin-top: 12px;
 }
 
@@ -6433,4 +6433,333 @@ textarea {
 }
 
 
+.content-taisao {
+    padding: 40px 0;
+    margin: 0 auto;
+}
+
+.content-taisao .wrap {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 32px;
+}
+
+.content-taisao .textwidget>p {
+    font-size: 15px;
+    line-height: 26px;
+}
+
+.content-taisao .textwidget ul {
+    list-style: none;
+    margin: 0px 0 20px;
+    padding: 0;
+    gap: 12px 40px;
+}
+
+.content-taisao li:first-child em {
+    font-size: 48px;
+}
+
+.content-taisao li:nth-child(2) em, .content-taisao li:nth-child(3) em {
+    font-size: 32px;
+}
+
+.content-taisao li:nth-child(2) strong, .content-taisao li:nth-child(3) strong {
+  display: inline;
+    font-size: 15px;
+}
+
+.content-taisao .textwidget p:last-child a {
+    border: 1px solid #c5a47e;
+    padding: 8px 20px;
+}
+
+.content-news {
+    padding: 40px 0px;
+    margin: auto;
+}
+
+
+
+  .content-news .widget-wrap {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    column-gap: 24px; 
+  }
+
+  .content-news .widget-wrap > *:first-child {
+    grid-column: auto;
+    justify-self: stretch;
+  }
+
+  .content-news .post .box-img img {
+    height: 220px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.content-news .post .widget-item-title a {
+    font-size: 18px;
+}
+
+.content-news .post .entry-text {
+    font-size: 15px;
+}
+
+.content-news ul li .img-box {
+    flex: 0 0 150px;
+}
+
+.content-news ul li .img-box img {
+    width: 150px;
+    height: 100px;
+}
+
+.content-news .extra-wrap {
+    gap: 16px;
+}
+
+.content-news .extra-title a {
+    line-height: 24px;
+    margin-bottom: 3px;
+}
+
+.content-news li {
+    padding: 20px 0;
+}
+.content-news .widget_text {
+    display: flex;
+    justify-content: center;
+}
+.content-news .widget_text a {
+    border: 1px solid #c5a47e;
+    padding: 8px 20px;
+    margin-top: 32px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content-dangky {
+    margin: 16px auto 0px;
+    padding: 45px 0px;
+}
+
+.content-dangky .widget_caldera_forms_widget {
+    padding:24px 24px 16px;
+    max-width: 100%;
+}
+
+.contact-section h2, .caldera-grid h2 {
+    font-size: 24px;
+    padding-bottom: 10px;
+}
+
+.content-dangky .caldera-grid h2 {
+    text-align: center !important;
+    margin-bottom: 20px !important;
+}
+
+.caldera-grid .form-group {
+    margin-bottom: 16px !important;
+}
+
+.caldera-grid .form-control {
+    font-size: 15px !important;
+}
+
+.content-dangky .caldera-grid .btn {
+    border: 1px solid #c5a47e !important;
+    padding: 8px 20px !important;
+    font-size: 15px !important
+}
+
+.before_footer {
+    position: relative;
+    background: #171616;
+    padding: 40px 0 15px;
+}
+
+.before_footer .wrap-section>section:nth-child(1) img {
+    width: 120px;
+}
+
+.before_footer .wrap-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.before_footer section:nth-child(1) ul li {
+    margin-top: 10px;
+}
+
+.before_footer ul li {
+    font-size: 16px;
+    line-height: 25px;
+}
+.before_footer ol li {
+    margin-top: 10px;
+    font-size: 15px !important;
+}
+
+.before_footer section:nth-child(2) {
+    margin-top: 40px;
+}
+
+.before_footer section:nth-child(3) {
+    margin-top: 20px;
+}
+
+
+.before_footer .wrap-section>section:nth-child(3) {
+    margin-left: 0;
+}
+
+.before_footer section:nth-child(3) p strong {
+    font-size: 18px;
+}
+
+.before_footer section:nth-child(3) ul {
+    list-style: none;
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+
+.before_footer section:nth-child(3) ul li {
+    display: flex;
+    gap: 6px;
+}
+
+.before_footer section:nth-child(3) iframe {
+    width: 100%;
+    height: 200px;
+    margin-top: 16px;
+}
+
+.before_footer section:nth-child(3) img {
+    margin-top: 16px;
+}
+
+.content-hero {
+    margin-top: 71px;
+}
+
+.content-breadcrumb {
+  width: 100%;
+  padding: 0px 15px;
+}
+
+.content-hero .hero-image {
+    height: 30vh;
+}
+
+.content-hero .hero-image img {
+    width: 100%;
+    height: 30vh;
+}
+
+.content-hero h2
+ {
+    font-size: 28px;
+}
+
+.breadcrumb span {
+    font-size: 15px;
+}
+
+.breadcrumb .wrap {
+    font-size: 15px;
+    line-height: 25px;
+}
+
+.content-vechungtoigt {
+    margin: 40px auto 40px;
+}
+
+
+.content-thanhtuu ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.content-thanhtuu ul em {
+    font-size: 28px;
+}
+
+.content-thanhtuu ul li {
+    font-size: 15px;
+}
+
+.content-tamnhin {
+    padding: 40px 0 40px;
+
+}
+
+.content-sumenh {
+    padding: 40px 0 40px;
+    margin: 140px auto;
+}
+
+.content-tamnhin .text {
+    position: absolute;
+    top: 120%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    padding: 24px;
+    max-width: 100%;
+    width: 95%;
+}
+
+.content-tamnhin .text h2, .content-giatri .text h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding-left: 12px;
+}
+
+.content-tamnhin .text p, .content-giatri .text p {
+    font-size: 15px;
+    line-height: 26px;
+}
+
+.content-tamnhin .text h2::before, .content-giatri .text h2::before {
+    width: 3px;
+    height: 25px;
+}
+
+.content-sumenh .text {
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 24px;
+       max-width: 100%;
+    width: 95%;
+}
+
+.content-sumenh .text h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding-right: 12px;
+}
+
+.content-sumenh .text h2::before {
+    width: 3px;
+    height: 25px;
+}
+
+.content-giatri .text {
+    position: absolute;
+    top: 150%;
+    right: -45%;
+    transform: translate(-50%, -50%);
+    padding: 24px;
+       max-width: 100%;
+    width: 95%;
+}
+
+.content-giatri {
+    padding: 40px 0;
+    margin-bottom: 330px;
+}
 }

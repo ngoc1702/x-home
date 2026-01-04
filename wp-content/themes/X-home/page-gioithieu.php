@@ -78,7 +78,7 @@ function gioi_thieu()
     if (!empty($thanhtuu)) {
         echo '<div>' . wp_kses_post($thanhtuu) . '</div>';
     }
-    echo '</div></section>';
+    echo '</div></div></section>';
 
     // Tầm nhìn
     $noidung_tamnhin = get_post_meta($post->ID, 'noidung_tamnhin', true);
