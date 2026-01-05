@@ -23,7 +23,7 @@ $args = [
 $related_query = new WP_Query( $args );
 
 if ( $related_query->have_posts() ) :
-    echo '<div class="page_congtrinh section"><div class="wrap">';
+    echo '<div class="page_congtrinh section">';
     echo '<h2 class="widgettitle">Dự án liên quan</h2>';
     echo '<div class="main-posts">';
 
@@ -53,7 +53,7 @@ if ( $related_query->have_posts() ) :
 
     endwhile;
 
-    echo '</div></div></div>'; // .main-posts .wrap .section
+    echo '</div></div>'; // .main-posts .wrap .section
 
     wp_reset_postdata();
 endif;

@@ -427,7 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
         responsive: [{
           breakpoint: 768,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 2,
           },
         }, ],
       });
@@ -486,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         
 
-        initSlickForMobile('.camket-box', {
+        initSlickForMobile('.yarpp-related .page_congtrinh .main-posts', {
           arrows: false,
           infinite: false,
           dots: true,
@@ -495,10 +495,25 @@ document.addEventListener("DOMContentLoaded", () => {
           autoplaySpeed: 4000,
           pauseOnHover: true,
           pauseOnFocus: false,
-          slidesToShow: 1.6,
-          slidesToScroll: 2
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        });
+
+
+         initSlickForMobile('.yarpp-related .main-posts', {
+          arrows: false,
+          infinite: false,
+          dots: true,
+          speed: 600,
+          autoplay: true,
+          autoplaySpeed: 4000,
+          pauseOnHover: true,
+          pauseOnFocus: false,
+          slidesToShow: 1,
+          slidesToScroll: 1,
         });
       }
+      
 
       
   // --- Slider cho 3 section Dịch vụ (Thiết kế / Thi công / Nội thất rời) ---

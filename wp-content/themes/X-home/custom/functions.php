@@ -962,3 +962,11 @@ add_action('wp_footer', function () {
     </script>
     <?php
 });
+
+add_action('template_redirect', function () {
+  if ( isset($_GET['add-to-cart']) && is_numeric($_GET['add-to-cart']) ) {
+    // Woo đã xử lý add-to-cart xong thì redirect về URL sạch để F5 không add lại
+    wp_safe_redirect( remove_query_arg('add-to-cart') );
+    exit;
+  }
+}, 20);
