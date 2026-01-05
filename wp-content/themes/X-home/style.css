@@ -5775,7 +5775,7 @@ line-height: normal;
 
 
 
- table.wc-block-cart-items .wc-block-cart-items__header .wc-block-cart-items__header-image {
+ .wc-block-cart-items__header-image {
     width: 218px !important;
 }
 .woocommerce-cart table.wc-block-cart-items .wc-block-cart-item__image img{
@@ -7408,42 +7408,50 @@ textarea {
   margin-bottom: 32px !important;
 }
 
-.is-medium table.wc-block-cart-items .wc-block-cart-items__row, .is-mobile table.wc-block-cart-items .wc-block-cart-items__row, .is-small table.wc-block-cart-items .wc-block-cart-items__row {
-    display: grid;
-    grid-template-columns: 93px 132px;
-     padding:  0px !important; 
+.woocommerce-cart table.wc-block-cart-items tbody td{
+  padding: 12px 14px !important;
 }
 
-table.wc-block-cart-items .wc-block-cart-items__header .wc-block-cart-items__header-image, .wc-block-cart-item__image {
-    width: 140px !important;
+ .wc-block-cart-items__header-image {
+    width: 182px !important;
+}
+
+.wc-block-cart-item__image {
+    width: 111px !important;
 }
 
 .wc-block-cart-items__header-product{
-  width: 200px !important;
+  width: 340px !important;
 }
 
-
-/* Tắt grid cho row trong cart items (giữ layout table để khớp 4 cột) */
-.is-medium table.wc-block-cart-items .wc-block-cart-items__row,
-.is-mobile  table.wc-block-cart-items .wc-block-cart-items__row,
-.is-small   table.wc-block-cart-items .wc-block-cart-items__row{
-  display: table-row !important;
-  grid-template-columns: unset !important;
-  grid-template-areas: unset !important;
-  gap: 0 !important;
-  padding: 0 !important; 
+.wc-block-cart-item__product{
+  width: 177px !important;
 }
 
-.is-medium table.wc-block-cart-items .wc-block-cart-items__row > *,
-.is-mobile  table.wc-block-cart-items .wc-block-cart-items__row > *,
-.is-small   table.wc-block-cart-items .wc-block-cart-items__row > *{
-  display: table-cell !important;
+.wc-block-cart-items thead tr{
+  display: flex !important;
+  padding: 0 !important;
+  
 }
 
+.wc-block-cart-items tbody tr{
+  display: flex !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
 
 .woocommerce-cart table.wc-block-cart-items thead th {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
+    padding: 12px 0px !important;
+}
+
+.wc-block-components-product-metadata {
+    font-size: 14px !important;
+}
+
+.editor-styles-wrapper table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__wrap>*, .editor-styles-wrapper table.wc-block-cart-items .wc-block-cart-items__row .wc-block-components-quantity-selector, table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__wrap>*, table.wc-block-cart-items .wc-block-cart-items__row .wc-block-components-quantity-selector {
+    margin-bottom: 6px !important;
 }
 
 .wc-block-cart .wc-block-components-sidebar .wc-block-cart__totals-title {
@@ -7487,4 +7495,50 @@ body:not(.woocommerce-block-theme-has-button-styles) .wc-block-components-button
     .wp-block-woocommerce-checkout-order-summary-block .wc-block-components-checkout-order-summary__title {
         padding: 0px 0 !important;
     }
+
+        .wp-block-woocommerce-checkout-order-summary-block .wc-block-components-checkout-order-summary__title,
+        .wp-block-woocommerce-checkout-order-summary-block .checkout-order-summary-block-fill {
+        border: none !important;
+    }
+    
+.wc-block-components-validation-error>p {
+    display: block !important;
+}
+
+    .wc-block-checkout__terms.wc-block-checkout__terms--with-separator {
+        font-size: 15px !important;
+        margin-bottom: 24px !important;
+    }
+    .wc-block-components-validation-error>p {
+      font-size: 15px !important;
+    }
+    #email{
+      margin-bottom: 12px;
+    }
+
+    .woocommerce-thankyou-order-received {
+    font-size: 20px;
+    line-height: 32px !important;
+}
+
+.woocommerce ul.order_details {
+    display: flex;
+    flex-direction: column !important;
+}
+
+.woocommerce ul.order_details li {
+    margin-bottom: 1em !important;
+}
+
+.woocommerce ul.order_details li:last-child {
+    margin-bottom: 0em !important;
+}
+
+.woocommerce ul.order_details li strong {
+    margin-top: 4px !important;
+}
+
+.woocommerce .woocommerce-customer-details .woocommerce-column__title{
+  margin-top: 16px !important;
+}
 }
