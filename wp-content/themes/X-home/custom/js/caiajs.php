@@ -500,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-         initSlickForMobile('.yarpp-related .main-posts', {
+         initSlickForMobile('.single-project .yarpp-related .main-posts', {
           arrows: false,
           infinite: false,
           dots: true,
@@ -1151,5 +1151,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const scrollBtn = document.getElementById('scrool-top');
+  if (!scrollBtn) return;
+
+  window.addEventListener('scroll', function () {
+    scrollBtn.classList.toggle('show', window.scrollY > 100);
+  }, { passive: true });
+
+  scrollBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>
+
 <?php
 }
+
+
